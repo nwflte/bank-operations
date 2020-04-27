@@ -16,8 +16,4 @@ public class VirementInterne extends Virement {
     this.compteBeneficiaire = compteBeneficiaire;
   }
 
-  @Override
-  public String getNrCompteBeneficiaire() {
-    return compteBeneficiaire.getRib();
-  }
 }

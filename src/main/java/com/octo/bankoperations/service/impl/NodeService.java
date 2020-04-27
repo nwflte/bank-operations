@@ -1,4 +1,4 @@
-package com.octo.bankoperations.service;
+package com.octo.bankoperations.service.impl;
 
 
 import org.springframework.stereotype.Service;

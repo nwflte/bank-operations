@@ -2,8 +2,6 @@ package com.octo.bankoperations.domain;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "UTILISATEUR")
@@ -24,11 +22,17 @@ public class Utilisateur {
   @Column(length = 60, nullable = false)
   private String firstname;
 
+  @Column(length = 40, unique = true)
+  private String email;
+
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  private Adresse adresse;
+
   @Temporal(TemporalType.DATE)
   private Date birthdate;
 
-  @OneToMany(mappedBy = "utilisateur")
-  private Set<Compte> comptes = new HashSet<>();
+  @OneToOne(cascade = CascadeType.ALL)
+  private Compte compte;
 
   public String getGender() {
     return gender;
@@ -70,12 +74,12 @@ public class Utilisateur {
     this.username = username;
   }
 
-  public Set<Compte> getComptes() {
-    return comptes;
+  public Compte getCompte() {
+    return compte;
   }
 
-  public void setComptes(Set<Compte> comptes) {
-    this.comptes = comptes;
+  public void setCompte(Compte compte) {
+    this.compte = compte;
   }
 
   public Long getId() {
@@ -84,5 +88,21 @@ public class Utilisateur {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public Adresse getAdresse() {
+    return adresse;
+  }
+
+  public void setAdresse(Adresse adresse) {
+    this.adresse = adresse;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 }

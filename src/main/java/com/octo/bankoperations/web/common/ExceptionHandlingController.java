@@ -2,6 +2,7 @@ package com.octo.bankoperations.web.common;
 
 import com.octo.bankoperations.exceptions.NegativeOrNullAmountException;
 import com.octo.bankoperations.exceptions.ObligationNotFoundException;
+import com.octo.bankoperations.exceptions.UtilisateurNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,11 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler(ObligationNotFoundException.class)
     public ResponseEntity<String> handleObligationNotFoundException(ObligationNotFoundException ex, WebRequest request) {
+        return error(ex, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UtilisateurNotFoundException.class)
+    public ResponseEntity<String> handleUtilisateurNotFoundException(UtilisateurNotFoundException ex, WebRequest request) {
         return error(ex, HttpStatus.NOT_FOUND);
     }
 

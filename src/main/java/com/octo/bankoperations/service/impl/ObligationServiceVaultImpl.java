@@ -3,8 +3,9 @@ package com.octo.bankoperations.service.impl;
 import com.octo.bankoperations.dto.CordaDDRObligationDTO;
 import com.octo.bankoperations.dto.ObligationRequestDTO;
 import com.octo.bankoperations.dto.ObligationUpdateDTO;
+import com.octo.bankoperations.enums.DDRObligationType;
 import com.octo.bankoperations.service.ObligationService;
-import com.octo.bankoperations.service.StateStatus;
+import com.octo.bankoperations.enums.StateStatus;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.octo.bankoperations.CONSTANTS.CORDA_URL;
 
@@ -24,17 +26,43 @@ public class ObligationServiceVaultImpl implements ObligationService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Override
-    public List<CordaDDRObligationDTO> loadAll(StateStatus stateStatus) {
+    public List<CordaDDRObligationDTO> loadAllObligations(StateStatus stateStatus) {
         ResponseEntity<List<CordaDDRObligationDTO>> response = restTemplate.exchange(OBLIGATIONS_URL, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<CordaDDRObligationDTO>>(){});
         return response.getBody();
     }
 
     @Override
-    public Optional<CordaDDRObligationDTO> findById(String id) {
+    public List<CordaDDRObligationDTO> loadAllPledges(StateStatus stateStatus) {
+        return loadAllObligations(stateStatus).stream().filter(ob -> ob.getType().equals(DDRObligationType.PLEDGE))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CordaDDRObligationDTO> loadAllRedeems(StateStatus stateStatus) {
+        return loadAllObligations(stateStatus).stream().filter(ob -> ob.getType().equals(DDRObligationType.REDEEM))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<CordaDDRObligationDTO> findObligationById(String id) {
         String url = OBLIGATIONS_URL + id;
         ResponseEntity<CordaDDRObligationDTO> response = restTemplate.getForEntity(url, CordaDDRObligationDTO.class);
         return Optional.ofNullable(response.getBody());
+    }
+
+    @Override
+    public Optional<CordaDDRObligationDTO> findPledgeById(String id) {
+        Optional<CordaDDRObligationDTO> obligation = findObligationById(id);
+        return obligation.isPresent() && obligation.get().getType().equals(DDRObligationType.PLEDGE) ?
+                obligation : Optional.empty();
+    }
+
+    @Override
+    public Optional<CordaDDRObligationDTO> findRedeemById(String id) {
+        Optional<CordaDDRObligationDTO> obligation = findObligationById(id);
+        return obligation.isPresent() && obligation.get().getType().equals(DDRObligationType.REDEEM) ?
+                obligation : Optional.empty();
     }
 
     @Override

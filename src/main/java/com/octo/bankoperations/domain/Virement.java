@@ -25,6 +25,9 @@ public abstract class Virement {
     @Column(length = 200)
     private String motifVirement;
 
+    @Column(length = 24)
+    private String ribBeneficiaire;
+
     public BigDecimal getMontantVirement() {
         return montantVirement;
     }
@@ -65,5 +68,11 @@ public abstract class Virement {
         this.id = id;
     }
 
-    public abstract String getNrCompteBeneficiaire();
+    public void setRibBeneficiaire(String nrCompteBeneficiaire) {
+        this.ribBeneficiaire = nrCompteBeneficiaire;
+    }
+
+    public String getRibBeneficiaire() {
+        return ribBeneficiaire;
+    }
 }

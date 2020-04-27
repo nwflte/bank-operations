@@ -1,15 +1,27 @@
 package com.octo.bankoperations.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class VirementDto implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class VirementDTO implements Serializable {
+  private Long id;
   private String ribEmetteur;
   private String ribBeneficiaire;
   private String motif;
-  private BigDecimal montantVirement;
+  private BigDecimal amount;
   private Date date;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
 
   public String getRibEmetteur() {
     return ribEmetteur;
@@ -27,12 +39,12 @@ public class VirementDto implements Serializable {
     this.ribBeneficiaire = ribBeneficiaire;
   }
 
-  public BigDecimal getMontantVirement() {
-    return montantVirement;
+  public BigDecimal getAmount() {
+    return amount;
   }
 
-  public void setMontantVirement(BigDecimal montantVirement) {
-    this.montantVirement = montantVirement;
+  public void setAmount(BigDecimal amount) {
+    this.amount = amount;
   }
 
   public String getMotif() {

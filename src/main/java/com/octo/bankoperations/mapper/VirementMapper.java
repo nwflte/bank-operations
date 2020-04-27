@@ -2,17 +2,17 @@ package com.octo.bankoperations.mapper;
 
 
 import com.octo.bankoperations.domain.Virement;
-import com.octo.bankoperations.domain.VirementExterne;
 import com.octo.bankoperations.dto.BankTransferDTO;
-import com.octo.bankoperations.dto.VirementDto;
+import com.octo.bankoperations.dto.VirementDTO;
 
 public class VirementMapper {
 
-    public static VirementDto map(Virement virement) {
+    public static VirementDTO map(Virement virement) {
         if (virement == null) return null;
-        VirementDto virementDto = new VirementDto();
-        virementDto.setMontantVirement(virement.getMontantVirement());
-        virementDto.setRibBeneficiaire(virement.getNrCompteBeneficiaire());
+        VirementDTO virementDto = new VirementDTO();
+        virementDto.setId(virement.getId());
+        virementDto.setAmount(virement.getMontantVirement());
+        virementDto.setRibBeneficiaire(virement.getRibBeneficiaire());
         virementDto.setRibEmetteur(virement.getCompteEmetteur().getRib());
         virementDto.setDate(virement.getDateExecution());
         virementDto.setMotif(virement.getMotifVirement());
@@ -26,7 +26,7 @@ public class VirementMapper {
         BankTransferDTO bankTransferDTO = new BankTransferDTO();
         bankTransferDTO.setAmount(virement.getMontantVirement());
         bankTransferDTO.setExecutionDate(virement.getDateExecution());
-        bankTransferDTO.setReceiverRIB(virement.getNrCompteBeneficiaire());
+        bankTransferDTO.setReceiverRIB(virement.getRibBeneficiaire());
         bankTransferDTO.setSenderRIB(virement.getCompteEmetteur().getRib());
         return bankTransferDTO;
     }

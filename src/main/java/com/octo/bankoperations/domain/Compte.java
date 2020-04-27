@@ -6,49 +6,60 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "COMPTE")
 public class Compte {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-  @Column(length = 24, unique = true)
-  private String rib;
+    @Column(length = 24, unique = true)
+    private String rib;
 
-  @Column(precision = 16, scale = 2)
-  private BigDecimal solde;
+    @Column(precision = 16, scale = 2)
+    private BigDecimal solde;
 
-  @ManyToOne
-  @JoinColumn(name = "utilisateur_id")
-  private Utilisateur utilisateur;
+    @ManyToOne
+    @JoinColumn(name = "utilisateur_id")
+    private Utilisateur utilisateur;
 
-  public String getRib() {
-    return rib;
-  }
+    @Column
+    private boolean blocked;
 
-  public void setRib(String nrCompte) {
-    this.rib = nrCompte;
-  }
+    public String getRib() {
+        return rib;
+    }
 
-  public BigDecimal getSolde() {
-    return solde;
-  }
+    public void setRib(String nrCompte) {
+        this.rib = nrCompte;
+    }
 
-  public void setSolde(BigDecimal solde) {
-    this.solde = solde;
-  }
+    public BigDecimal getSolde() {
+        return solde;
+    }
 
-  public Utilisateur getUtilisateur() {
-    return utilisateur;
-  }
+    public void setSolde(BigDecimal solde) {
+        this.solde = solde;
+    }
 
-  public void setUtilisateur(Utilisateur utilisateur) {
-    this.utilisateur = utilisateur;
-  }
+    public Utilisateur getUtilisateur() {
+        return utilisateur;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    public void setUtilisateur(Utilisateur utilisateur) {
+        this.utilisateur = utilisateur;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
 }
