@@ -48,10 +48,11 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         super.configure(http);
-        http
+        // To access h2 console
+        http.headers().frameOptions().sameOrigin().and()
                 .cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/**").hasRole("USER")
+                .antMatchers("/api/**", "/h2-console/**").hasRole("USER")
                 .anyRequest().denyAll();
     }
 

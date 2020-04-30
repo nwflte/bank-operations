@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     // Keycloak
     implementation 'org.keycloak:keycloak-spring-boot-starter'
@@ -38,6 +39,7 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    testImplementation 'org.springframework.amqp:spring-rabbit-test'
     //testImplementation 'org.springframework.boot:spring-security-test'
     // testImplementation 'org.keycloak:keycloak-test-helper'
 }

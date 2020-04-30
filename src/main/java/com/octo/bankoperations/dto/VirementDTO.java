@@ -1,6 +1,7 @@
 package com.octo.bankoperations.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.octo.bankoperations.enums.VirementStatus;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,11 +10,14 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VirementDTO implements Serializable {
   private Long id;
+  private String reference;
   private String ribEmetteur;
   private String ribBeneficiaire;
   private String motif;
   private BigDecimal amount;
   private Date date;
+  private VirementStatus status;
+  private Date statusUpdate;
 
   public Long getId() {
     return id;
@@ -21,6 +25,14 @@ public class VirementDTO implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getReference() {
+    return reference;
+  }
+
+  public void setReference(String reference) {
+    this.reference = reference;
   }
 
   public String getRibEmetteur() {
@@ -61,5 +73,21 @@ public class VirementDTO implements Serializable {
 
   public void setDate(Date date) {
     this.date = date;
+  }
+
+  public VirementStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(VirementStatus status) {
+    this.status = status;
+  }
+
+  public Date getStatusUpdate() {
+    return statusUpdate;
+  }
+
+  public void setStatusUpdate(Date statusUpdate) {
+    this.statusUpdate = statusUpdate;
   }
 }

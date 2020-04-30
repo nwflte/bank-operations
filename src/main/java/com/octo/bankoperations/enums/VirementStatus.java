@@ -1,0 +1,5 @@
+package com.octo.bankoperations.enums;
+
+public enum VirementStatus {
+    EXTERNE_PENDING_APPROVAL, EXTERNE_APPROVED, EXTERNE_REJECTED, INTERNE_NOT_SAVED_IN_CORDA, INTERNE_SAVED_IN_CORDA
+}
