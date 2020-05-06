@@ -5,14 +5,10 @@ import com.octo.bankoperations.exceptions.CompteNonExistantException;
 import com.octo.bankoperations.mapper.CompteMapper;
 import com.octo.bankoperations.service.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/comptes")
@@ -28,6 +24,12 @@ public class CompteController {
     @GetMapping("/exists/{rib}")
     public ResponseEntity<Boolean> ribExists(@PathVariable String rib){
         return ResponseEntity.ok(compteService.existsByRIB(rib));
+    }
+
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody CompteDTO dto){
+        compteService.save(dto);
     }
 
     @GetMapping("{id}")

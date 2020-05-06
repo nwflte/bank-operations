@@ -1,5 +1,7 @@
 package com.octo.bankoperations.domain;
 
+import com.octo.bankoperations.enums.Gender;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,7 +16,7 @@ public class Utilisateur {
   private String username;
 
   @Column(length = 10, nullable = false)
-  private String gender;
+  private Gender gender;
 
   @Column(length = 60, nullable = false)
   private String lastname;
@@ -34,11 +36,11 @@ public class Utilisateur {
   @OneToOne(cascade = CascadeType.ALL)
   private Compte compte;
 
-  public String getGender() {
+  public Gender getGender() {
     return gender;
   }
 
-  public void setGender(String gender) {
+  public void setGender(Gender gender) {
     this.gender = gender;
   }
 

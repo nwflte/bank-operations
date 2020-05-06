@@ -1,6 +1,7 @@
 package com.octo.bankoperations;
 
 import com.octo.bankoperations.domain.*;
+import com.octo.bankoperations.enums.Gender;
 import com.octo.bankoperations.enums.VirementStatus;
 import com.octo.bankoperations.repository.CompteRepository;
 import com.octo.bankoperations.repository.UtilisateurRepository;
@@ -40,7 +41,7 @@ public class DBInit implements CommandLineRunner {
         utilisateur1.setUsername("user1");
         utilisateur1.setLastname("last1");
         utilisateur1.setFirstname("first1");
-        utilisateur1.setGender("Male");
+        utilisateur1.setGender(Gender.MALE);
         utilisateur1.setAdresse(adresse1);
         utilisateur1.setBirthdate(new Date());
         utilisateur1.setEmail("user1@gmail.com");
@@ -49,7 +50,7 @@ public class DBInit implements CommandLineRunner {
         utilisateur2.setUsername("user2");
         utilisateur2.setLastname("last2");
         utilisateur2.setFirstname("first2");
-        utilisateur2.setGender("Female");
+        utilisateur2.setGender(Gender.FEMALE);
         utilisateur2.setAdresse(adresse2);
         utilisateur2.setBirthdate(new Date());
         utilisateur2.setEmail("user2@gmail.com");

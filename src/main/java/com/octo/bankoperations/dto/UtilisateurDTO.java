@@ -1,6 +1,7 @@
 package com.octo.bankoperations.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.octo.bankoperations.enums.Gender;
 
 import java.util.Date;
 
@@ -10,7 +11,7 @@ public class UtilisateurDTO {
 
     private String username;
 
-    private String gender;
+    private Gender gender;
 
     private String lastname;
 
@@ -42,11 +43,11 @@ public class UtilisateurDTO {
         this.username = username;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 

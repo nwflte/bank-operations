@@ -9,11 +9,9 @@ import com.octo.bankoperations.mapper.UtilisateurMapper;
 import com.octo.bankoperations.mapper.VirementMapper;
 import com.octo.bankoperations.service.UtilisateurService;
 import com.octo.bankoperations.service.VirementService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +31,12 @@ public class UtilisateurController {
     @GetMapping
     public ResponseEntity<List<UtilisateurDTO>> getAll(){
         return ResponseEntity.ok(utilisateurService.getAll().stream().map(UtilisateurMapper::map).collect(Collectors.toList()));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void add(@RequestBody UtilisateurDTO dto){
+        utilisateurService.save(dto);
     }
 
     @GetMapping("/{id}")

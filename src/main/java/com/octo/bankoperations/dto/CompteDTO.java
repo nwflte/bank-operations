@@ -11,6 +11,8 @@ public class CompteDTO {
 
     private boolean blocked;
 
+    private Long utilisateurId;
+
     public Long getId() {
         return id;
     }
@@ -41,5 +43,13 @@ public class CompteDTO {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public Long getUtilisateurId() {
+        return utilisateurId;
+    }
+
+    public void setUtilisateurId(Long utilisateurId) {
+        this.utilisateurId = utilisateurId;
     }
 }
