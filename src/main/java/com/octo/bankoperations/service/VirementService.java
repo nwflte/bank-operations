@@ -1,6 +1,5 @@
 package com.octo.bankoperations.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.octo.bankoperations.domain.Virement;
 import com.octo.bankoperations.dto.BankTransferDTO;
 import com.octo.bankoperations.dto.VirementDTO;

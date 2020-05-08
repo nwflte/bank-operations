@@ -2,14 +2,12 @@ package com.octo.bankoperations.amqp;
 
 import com.octo.bankoperations.service.VirementService;
 import com.rabbitmq.client.Channel;
-import jdk.nashorn.internal.ir.ObjectNode;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 
-import java.io.IOException;
 import java.util.Map;
 
 @RabbitListener(queues = "virements_status")

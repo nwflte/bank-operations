@@ -9,8 +9,6 @@ import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 
-import java.util.Map;
-
 @RabbitListener(queues = "virements_received")
 public class AMQPReceiverVirements {
 

@@ -1,6 +1,5 @@
 package com.octo.bankoperations.repository;
 
-import com.octo.bankoperations.domain.Compte;
 import com.octo.bankoperations.domain.Virement;
 import org.springframework.data.jpa.repository.JpaRepository;
 

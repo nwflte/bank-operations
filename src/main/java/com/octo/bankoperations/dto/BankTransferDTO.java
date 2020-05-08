@@ -1,6 +1,5 @@
 package com.octo.bankoperations.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.octo.bankoperations.enums.VirementStatus;
 
 import java.io.Serializable;

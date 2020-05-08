@@ -1,6 +1,9 @@
 package com.octo.bankoperations;
 
-import com.octo.bankoperations.domain.*;
+import com.octo.bankoperations.domain.Adresse;
+import com.octo.bankoperations.domain.Compte;
+import com.octo.bankoperations.domain.Utilisateur;
+import com.octo.bankoperations.domain.Virement;
 import com.octo.bankoperations.enums.Gender;
 import com.octo.bankoperations.enums.VirementStatus;
 import com.octo.bankoperations.repository.CompteRepository;

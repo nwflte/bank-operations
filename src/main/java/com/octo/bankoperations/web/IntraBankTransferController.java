@@ -2,7 +2,6 @@ package com.octo.bankoperations.web;
 
 import com.octo.bankoperations.dto.BankTransferDTO;
 import com.octo.bankoperations.dto.CordaIntraBankTransferDTO;
-import com.octo.bankoperations.dto.SignedTransaction;
 import com.octo.bankoperations.exceptions.TransferNotFoundException;
 import com.octo.bankoperations.service.IntraBankTransferService;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @RestController()
 @RequestMapping("api/intra")

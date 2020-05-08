@@ -3,12 +3,13 @@ package com.octo.bankoperations.service.impl;
 import com.octo.bankoperations.dto.BankTransferDTO;
 import com.octo.bankoperations.dto.CordaIntraBankTransferDTO;
 import com.octo.bankoperations.service.IntraBankTransferService;
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,12 @@ import static com.octo.bankoperations.CONSTANTS.CORDA_URL;
 public class IntraBankTransferServiceVaultImpl implements IntraBankTransferService {
 
     private static final String INTRA_BANK_URL = CORDA_URL + "/api/intra/";
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final KeycloakRestTemplate restTemplate;
+
+    @Autowired
+    public IntraBankTransferServiceVaultImpl(KeycloakRestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public List<CordaIntraBankTransferDTO> loadAll() {

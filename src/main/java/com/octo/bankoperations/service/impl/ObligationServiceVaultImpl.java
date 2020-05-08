@@ -4,14 +4,15 @@ import com.octo.bankoperations.dto.CordaDDRObligationDTO;
 import com.octo.bankoperations.dto.ObligationRequestDTO;
 import com.octo.bankoperations.dto.ObligationUpdateDTO;
 import com.octo.bankoperations.enums.DDRObligationType;
-import com.octo.bankoperations.service.ObligationService;
 import com.octo.bankoperations.enums.StateStatus;
+import com.octo.bankoperations.service.ObligationService;
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,12 @@ import static com.octo.bankoperations.CONSTANTS.CORDA_URL;
 public class ObligationServiceVaultImpl implements ObligationService {
 
     private static final String OBLIGATIONS_URL = CORDA_URL + "/api/obligations/";
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final KeycloakRestTemplate restTemplate;
+
+    @Autowired
+    public ObligationServiceVaultImpl(KeycloakRestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public List<CordaDDRObligationDTO> loadAllObligations(StateStatus stateStatus) {
