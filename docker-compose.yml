@@ -1,0 +1,33 @@
+version: '3'
+services:
+  app:
+    container_name: bank-backend
+    image: app-springboot-postgresql
+    build: ./dev/bank-operations-backend/
+    ports:
+      - "8080:8080"
+    environment:
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpostgresql:5432/backend
+    - SPRING_DATASOURCE_USERNAME=postgres
+    - SPRING_DATASOURCE_PASSWORD=password
+    - SPRING_RABBITMQ_HOST=rabbitmq
+    depends_on:
+      - dbpostgresql
+      - rabbitmq
+  dbpostgresql:
+    image: postgres
+    ports:
+    - "5432:5432"
+    volumes:
+    - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    environment:
+    - POSTGRES_PASSWORD=password
+    - POSTGRES_USER=postgres
+    - POSTGRES_MULTIPLE_DATABASES=backend,banka,bankb,centralbank
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+    - "5673:5672"
+    - "15673:15672"
+  
+  
