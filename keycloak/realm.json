@@ -580,11 +580,11 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://localhost:8081/*",
+        "http://bank-backend:8080/*",
         "http://localhost:3000/*"
       ],
       "webOrigins": [
-        "http://localhost:8081",
+        "http://bank-backend:8080",
         "+",
         "http://localhost:3000"
       ],

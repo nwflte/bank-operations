@@ -68,6 +68,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         http.headers().frameOptions().sameOrigin().and()
                 .cors().and().csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/api/**", "/h2-console/**").hasRole("USER")
                 .anyRequest().denyAll();
     }

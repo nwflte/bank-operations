@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-backend
+  labels:
+    name: bank-backend
+    app: bank-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bank-backend
+  template:
+    metadata:
+      name: bank-backend
+      labels:
+        app: bank-backend
+        name: bank-backend
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: bank-backend
+          image: naoufal450/bank-backend:latest
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "docker"
+            - name: SPRING_RABBITMQ_HOST
+              value: "rabbitmq"
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/backend"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "password"
+            - name: keycloak.auth-server-url
+              value: "keycloak:8080/auth"
+          ports:
+            - containerPort: 8081
+              #protocol: TCP
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 400m
+              memory: 512Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-backend
+  labels:
+    app: bank-backend
+    name: bank-backend
+spec:
+  type: NodePort
+  ports:
+#    - name: http
+#      protocol: TCP
+#      port: 8081
+#      targetPort: 8080
+#      nodePort: 30081
+    - nodePort: 31000
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: bank-backend
+    name: bank-backend

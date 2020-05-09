@@ -1,33 +1,62 @@
 version: '3'
 services:
-  app:
+  bank-backend:
     container_name: bank-backend
-    image: app-springboot-postgresql
-    build: ./dev/bank-operations-backend/
+    image: naoufal450/bank-backend
+    build: ./
     ports:
-      - "8080:8080"
+      - "8081:8081"
     environment:
-    - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpostgresql:5432/backend
-    - SPRING_DATASOURCE_USERNAME=postgres
-    - SPRING_DATASOURCE_PASSWORD=password
-    - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpostgresql:5432/backend
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_RABBITMQ_HOST=rabbitmq
     depends_on:
       - dbpostgresql
       - rabbitmq
-  dbpostgresql:
-    image: postgres
-    ports:
-    - "5432:5432"
-    volumes:
-    - ./pg-init-scripts:/docker-entrypoint-initdb.d
-    environment:
-    - POSTGRES_PASSWORD=password
-    - POSTGRES_USER=postgres
-    - POSTGRES_MULTIPLE_DATABASES=backend,banka,bankb,centralbank
+      - keycloak
+
   rabbitmq:
     image: rabbitmq:3-management
     ports:
-    - "5673:5672"
-    - "15673:15672"
+      - "5673:5672"
+      - "15673:15672"
+
+  keycloak:
+    image: jboss/keycloak
+    restart: on-failure
+    ports:
+      - "8180:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/tmp/example-realm.json
+      - DB_VENDOR=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_ADDR=dbpostgresql
+      - DB_PORT=5432
+      - DB_DATABASE=keycloakdb
+    volumes:
+      - ./keycloak-realm/realm.json:/tmp/example-realm.json
+    depends_on:
+      - dbpostgresql
+
+  dbpostgresql:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_MULTIPLE_DATABASES=backend,banka,bankb,centralbank,keycloakdb
+
+volumes:
+  pgdata:
+    driver: local
+
   
   
