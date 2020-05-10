@@ -4,30 +4,21 @@ metadata:
   name: keycloak
   labels:
     app: keycloak
-    name: keycloak
 spec:
-  type: NodePort
   ports:
-    #    - name: http
-    #      protocol: TCP
-    #      port: 8080
-    #      nodePort: 30080
     - name: http
-      nodePort: 30080
       port: 8080
       targetPort: 8080
   selector:
     app: keycloak
-    name: keycloak
-
+  type: LoadBalancer
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak
+  namespace: default
   labels:
-    name: keycloak
     app: keycloak
 spec:
   replicas: 1
@@ -36,53 +27,34 @@ spec:
       app: keycloak
   template:
     metadata:
-      name: keycloak
       labels:
         app: keycloak
-        name: keycloak
     spec:
-      restartPolicy: Always
       containers:
         - name: keycloak
-          image: jboss/keycloak
-          imagePullPolicy: IfNotPresent
+          image: quay.io/keycloak/keycloak:10.0.1
+          env:
+            - name: KEYCLOAK_USER
+              value: "admin"
+            - name: KEYCLOAK_PASSWORD
+              value: "admin"
+            - name: PROXY_ADDRESS_FORWARDING
+              value: "true"
+            - name: KEYCLOAK_LOGLEVEL
+              value: "DEBUG"
+            - name: PROXY_ADDRESS_FORWARDING
+              value: "true"
+            - name: DB_VENDOR
+              value: "h2"
           ports:
             - name: http
               containerPort: 8080
             - name: https
               containerPort: 8443
-#          readinessProbe:
-#            httpGet:
-#              path: /auth/realms/master
-#              port: 8080
-          resources:
-            requests:
-              cpu: 200m
-              memory: 256Mi
-            limits:
-              cpu: 400m
-              memory: 512Mi
-          env:
-            - name: KEYCLOAK_LOGLEVEL
-              value: "DEBUG"
-            - name: PROXY_ADDRESS_FORWARDING
-              value: "true"
-            - name: KEYCLOAK_USER
-              value: "admin"
-            - name: KEYCLOAK_PASSWORD
-              value: "admin"
-            - name: DB_VENDOR
-              value: "h2"
-#            - name: DB_USER
-#              value: "postgres"
-#            - name: DB_PASSWORD
-#              value: "password"
-#            - name: DB_ADDR
-#              value: "postgres"
-#            - name: DB_PORT
-#              value: "5432"
-#            - name: DB_DATABASE
-#              value: "project"
+          readinessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: 8080
           volumeMounts:
             - mountPath: /tmp/realm.json
               name: keycloak-imported-conf
