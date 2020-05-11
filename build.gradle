@@ -45,6 +45,9 @@ dependencies {
     testImplementation 'org.springframework.amqp:spring-rabbit-test'
     //testImplementation 'org.springframework.boot:spring-security-test'
     // testImplementation 'org.keycloak:keycloak-test-helper'
+
+    // Fix Weird error class file for javax.interceptor.InterceptorBinding not found
+    compile 'javax.interceptor:javax.interceptor-api:1.2.2'
 }
 
 dependencyManagement {
