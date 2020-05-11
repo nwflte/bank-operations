@@ -8,10 +8,6 @@ metadata:
 spec:
   type: NodePort
   ports:
-    #    - name: http
-    #      protocol: TCP
-    #      port: 8080
-    #      nodePort: 30080
     - name: http
       nodePort: 30080
       port: 8080
@@ -51,10 +47,10 @@ spec:
               containerPort: 8080
             - name: https
               containerPort: 8443
-#          readinessProbe:
-#            httpGet:
-#              path: /auth/realms/master
-#              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: 8080
           resources:
             requests:
               cpu: 200m
@@ -72,17 +68,19 @@ spec:
             - name: KEYCLOAK_PASSWORD
               value: "admin"
             - name: DB_VENDOR
-              value: "h2"
-#            - name: DB_USER
-#              value: "postgres"
-#            - name: DB_PASSWORD
-#              value: "password"
-#            - name: DB_ADDR
-#              value: "postgres"
-#            - name: DB_PORT
-#              value: "5432"
-#            - name: DB_DATABASE
-#              value: "project"
+              value: "postgres"
+            - name: DB_USER
+              value: "postgres"
+            - name: DB_PASSWORD
+              value: "password"
+            - name: DB_ADDR
+              value: "postgres"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_DATABASE
+              value: "keycloak"
+            - name: KEYCLOAK_IMPORT
+              value: "/tmp/realm.json"
           volumeMounts:
             - mountPath: /tmp/realm.json
               name: keycloak-imported-conf
@@ -107,7 +105,7 @@ spec:
   accessModes:
     - ReadOnlyMany
   hostPath:
-    path: "/c/dev/bank-operations-backend/keycloak/realm.json"
+    path: "/home/naoufal/bank-operations/keycloak/realm.json"
 
 ---
 

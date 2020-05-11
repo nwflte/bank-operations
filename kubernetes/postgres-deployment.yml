@@ -5,8 +5,7 @@ metadata:
   labels:
     app: postgres
 data:
-  #POSTGRES_MULTIPLE_DATABASES: backend,banka,bankb,centralbank,keycloakdb
-  POSTGRES_DB: project
+  POSTGRES_MULTIPLE_DATABASES: backend,banka,bankb,centralbank,keycloak
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: password
 
@@ -26,7 +25,7 @@ spec:
   accessModes:
     - ReadOnlyMany
   hostPath:
-    path: "/c/dev/bank-operations-backend/pg-init-scripts/"
+    path: "/home/naoufal/bank-operations/pg-init-scripts/"
 
 ---
 
@@ -60,7 +59,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/mnt/data2"
+    path: "/mnt/postgres-data"
     type: DirectoryOrCreate
 
 ---

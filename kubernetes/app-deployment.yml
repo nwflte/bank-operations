@@ -34,7 +34,7 @@ spec:
             - name: SPRING_DATASOURCE_PASSWORD
               value: "password"
             - name: keycloak.auth-server-url
-              value: "keycloak:8080/auth"
+              value: "http://10.0.2.15:30080/auth"
           ports:
             - containerPort: 8081
               #protocol: TCP
@@ -58,11 +58,6 @@ metadata:
 spec:
   type: NodePort
   ports:
-#    - name: http
-#      protocol: TCP
-#      port: 8081
-#      targetPort: 8080
-#      nodePort: 30081
     - nodePort: 31000
       port: 8081
       targetPort: 8081
