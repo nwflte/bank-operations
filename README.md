@@ -16,8 +16,10 @@ Modify absolute paths of volumes in files kubernetes/postgres-deployement.yml an
 
 From root folder:
 
-0- If you need to build the backend image (skip if you want to use the image pulled from docker hub)
+0- If you need to build the backend image (skip to step 1 if you want to use the image from docker hub)
 ```
+$ ./gradlew assemble
+$ mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
 $ docker-compose build
 $ eval $(minikube docker-env) # Do this If you are using minikube to use images from local docker daemon
 ```
