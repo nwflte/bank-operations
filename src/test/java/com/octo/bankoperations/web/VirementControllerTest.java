@@ -37,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(value = VirementController.class)
-//ContextConfiguration(classes = TestSecConfig.class)
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("test")
 class VirementControllerTest {

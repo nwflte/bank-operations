@@ -69,8 +69,11 @@ public class ModelsUtil {
         client.setFirstname("first1");
         client.setGender(Gender.MALE);
         client.setAdresse(createAdresse());
-        client.setBirthdate(new java.util.Date());
+        client.setBirthdate(Date.from(Instant.parse("2020-05-01T15:23:01Z")));
         client.setEmail("user1@gmail.com");
+        Compte compte = new Compte();
+        compte.setClient(client);
+        client.setCompte(compte);
         return client;
     }
 
@@ -104,7 +107,7 @@ public class ModelsUtil {
         pledge.setExternalId("KFKFKLLLDD");
         pledge.setIssuer("ISSUER");
         pledge.setOwner("OWNER");
-        pledge.setLinearId(UUID.randomUUID());
+        pledge.setLinearId(UUID.fromString("d44f9dbe-4403-4568-982a-c07c49bd7e38"));
         pledge.setRequester("REQUESTER");
         pledge.setRequesterDate(Date.from(Instant.parse("2020-05-01T15:23:01Z")));
         pledge.setStatus(status);
@@ -127,7 +130,7 @@ public class ModelsUtil {
         dto.setCurrency("MAD");
         dto.setExecutionDate(Date.from(Instant.parse("2020-05-01T15:23:01Z")));
         dto.setExternalId("TRANSFER_ID");
-        dto.setLinearId(UUID.randomUUID());
+        dto.setLinearId(UUID.fromString("d44f9dbe-4403-4568-982a-c07c49bd7e38"));
         dto.setReceiverRIB("007111111111111111111111");
         dto.setSenderRIB("007111111111111111111112");
         return dto;
@@ -147,7 +150,7 @@ public class ModelsUtil {
         dto.setCurrency("MAD");
         dto.setExecutionDate(Date.from(Instant.parse("2020-05-01T15:23:01Z")));
         dto.setExternalId("TRANSFER_ID");
-        dto.setLinearId(UUID.randomUUID());
+        dto.setLinearId(UUID.fromString("d44f9dbe-4403-4568-982a-c07c49bd7e38"));
         dto.setReceiverRIB("007111111111111111111111");
         dto.setSenderRIB("007111111111111111111112");
         return dto;

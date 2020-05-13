@@ -9,6 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("api/comptes")
@@ -21,15 +26,20 @@ public class CompteController {
         this.compteService = compteService;
     }
 
+    @GetMapping
+    public List<CompteDTO> getAll() {
+        return Optional.ofNullable(compteService.getAll()).orElse(Collections.emptyList())
+                .stream().map(CompteMapper::map).collect(Collectors.toList());
+    }
+
     @GetMapping("/exists/{rib}")
     public ResponseEntity<Boolean> ribExists(@PathVariable String rib){
         return ResponseEntity.ok(compteService.existsByRIB(rib));
     }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody CompteDTO dto){
-        compteService.save(dto);
+    @PostMapping
+    public ResponseEntity<CompteDTO> create(@RequestBody CompteDTO dto){
+        return new ResponseEntity<>(CompteMapper.map(compteService.save(dto)), HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
@@ -39,7 +49,7 @@ public class CompteController {
     }
 
     @GetMapping("client/{id}")
-    public ResponseEntity<CompteDTO> getByUtilisateurId(@PathVariable Long id){
+    public ResponseEntity<CompteDTO> getByClientId(@PathVariable Long id){
         return ResponseEntity.
                 ok(CompteMapper.map(compteService.getComptesForClient(id).orElseThrow(CompteNonExistantException::new)));
     }

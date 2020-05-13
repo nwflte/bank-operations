@@ -29,8 +29,6 @@ public class PledgeController {
 
     @GetMapping
     public ResponseEntity<List<CordaDDRObligationDTO>> getAll(@RequestParam(value = "status", defaultValue = "all") String status ) {
-/*        if(!Arrays.stream(StateStatus.values()).anyMatch(val -> val.name().compareToIgnoreCase(status) == 0))
-            throw new*/
         return ResponseEntity.ok(obligationService.loadAllPledges(StateStatus.valueOf(status.toUpperCase())));
     }
 

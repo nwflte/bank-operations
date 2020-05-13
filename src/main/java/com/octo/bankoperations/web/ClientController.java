@@ -33,16 +33,16 @@ public class ClientController {
         return ResponseEntity.ok(clientService.getAll().stream().map(ClientMapper::map).collect(Collectors.toList()));
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void add(@RequestBody ClientDTO dto){
-        clientService.save(dto);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ClientDTO> getById(@PathVariable Long id){
         return ResponseEntity.ok(ClientMapper
                 .map(clientService.getById(id).orElseThrow(() -> new ClientNotFoundException(id))));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO dto){
+        return new ResponseEntity<>(ClientMapper.map(clientService.save(dto)), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/compte")
