@@ -28,7 +28,7 @@ public class RedeemController {
 
     @GetMapping(value = "{id}")
     public ResponseEntity<CordaDDRObligationDTO> getById(@PathVariable String id) {
-        return ResponseEntity.ok(obligationService.findRedeemById(id).orElseThrow(() -> new ObligationNotFoundException(id)));
+        return ResponseEntity.ok(obligationService.findRedeemByExternalId(id).orElseThrow(() -> new ObligationNotFoundException(id)));
     }
 
     @PostMapping

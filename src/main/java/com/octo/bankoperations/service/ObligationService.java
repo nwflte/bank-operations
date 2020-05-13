@@ -16,11 +16,11 @@ public interface ObligationService {
 
     List<CordaDDRObligationDTO> loadAllRedeems(StateStatus stateStatus);
 
-    Optional<CordaDDRObligationDTO> findObligationById(String id);
+    Optional<CordaDDRObligationDTO> findObligationByExternalId(String id);
 
-    Optional<CordaDDRObligationDTO> findPledgeById(String id);
+    Optional<CordaDDRObligationDTO> findPledgeByExternalId(String id);
 
-    Optional<CordaDDRObligationDTO> findRedeemById(String id);
+    Optional<CordaDDRObligationDTO> findRedeemByExternalId(String id);
 
     Optional<String> createPledge(long amount);
 

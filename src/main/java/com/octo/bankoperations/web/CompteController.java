@@ -38,9 +38,9 @@ public class CompteController {
                 ok(CompteMapper.map((compteService.getById(id).orElseThrow(() -> new CompteNonExistantException(id)))));
     }
 
-    @GetMapping("utilisateur/{id}")
+    @GetMapping("client/{id}")
     public ResponseEntity<CompteDTO> getByUtilisateurId(@PathVariable Long id){
         return ResponseEntity.
-                ok(CompteMapper.map(compteService.getForUtilisateur(id).orElseThrow(CompteNonExistantException::new)));
+                ok(CompteMapper.map(compteService.getComptesForClient(id).orElseThrow(CompteNonExistantException::new)));
     }
 }

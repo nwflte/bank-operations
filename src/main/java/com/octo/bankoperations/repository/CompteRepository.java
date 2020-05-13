@@ -1,5 +1,6 @@
 package com.octo.bankoperations.repository;
 
+import com.octo.bankoperations.domain.Client;
 import com.octo.bankoperations.domain.Compte;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,5 +11,5 @@ public interface CompteRepository extends JpaRepository<Compte, Long> {
 
     boolean existsByRib(String rib);
 
-    Optional<Compte> findByUtilisateur_Id(Long id);
+    Optional<Compte> findByClient(Client client);
 }

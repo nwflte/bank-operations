@@ -11,7 +11,7 @@ public class CompteMapper {
         compteDTO.setRib(compte.getRib());
         compteDTO.setBlocked(compte.isBlocked());
         compteDTO.setSolde(compte.getSolde());
-        if(compte.getUtilisateur() != null) compteDTO.setUtilisateurId(compte.getUtilisateur().getId());
+        if(compte.getClient() != null) compteDTO.setClientId(compte.getClient().getId());
         return compteDTO;
     }
 }

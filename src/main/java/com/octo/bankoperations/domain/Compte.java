@@ -17,8 +17,8 @@ public class Compte {
     private BigDecimal solde;
 
     @ManyToOne
-    @JoinColumn(name = "utilisateur_id")
-    private Utilisateur utilisateur;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     @Column
     private boolean blocked;
@@ -39,12 +39,12 @@ public class Compte {
         this.solde = solde;
     }
 
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUtilisateur(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public Long getId() {

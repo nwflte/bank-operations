@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.octo.bankoperations.enums.Gender;
 
 import java.util.Date;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UtilisateurDTO {
+public class ClientDTO {
     private Long id;
 
     private String username;
@@ -26,6 +27,23 @@ public class UtilisateurDTO {
     private String adresse2;
 
     private Date birthdate;
+
+    public ClientDTO() {
+    }
+
+    public ClientDTO(Long id, String username, Gender gender, String lastname, String firstname, String email, String ville,
+                     String adresse1, String adresse2, Date birthdate) {
+        this.id = id;
+        this.username = username;
+        this.gender = gender;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.email = email;
+        this.ville = ville;
+        this.adresse1 = adresse1;
+        this.adresse2 = adresse2;
+        this.birthdate = birthdate;
+    }
 
     public Long getId() {
         return id;
@@ -105,5 +123,27 @@ public class UtilisateurDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClientDTO clientDTO = (ClientDTO) o;
+        return Objects.equals(id, clientDTO.id) &&
+                Objects.equals(username, clientDTO.username) &&
+                gender == clientDTO.gender &&
+                Objects.equals(lastname, clientDTO.lastname) &&
+                Objects.equals(firstname, clientDTO.firstname) &&
+                Objects.equals(email, clientDTO.email) &&
+                Objects.equals(ville, clientDTO.ville) &&
+                Objects.equals(adresse1, clientDTO.adresse1) &&
+                Objects.equals(adresse2, clientDTO.adresse2) &&
+                Objects.equals(birthdate, clientDTO.birthdate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, gender, lastname, firstname, email, ville, adresse1, adresse2, birthdate);
     }
 }

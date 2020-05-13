@@ -6,6 +6,7 @@ import com.octo.bankoperations.enums.VirementStatus;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VirementDTO implements Serializable {
@@ -15,9 +16,25 @@ public class VirementDTO implements Serializable {
   private String ribBeneficiaire;
   private String motif;
   private BigDecimal amount;
-  private Date date;
+  private Date dateExecution;
   private VirementStatus status;
-  private Date statusUpdate;
+  private Date dateUpdateStatus;
+
+  public VirementDTO() {
+  }
+
+  public VirementDTO(Long id, String reference, String ribEmetteur, String ribBeneficiaire, String motif, BigDecimal amount,
+                     Date dateExecution, VirementStatus status, Date dateUpdateStatus) {
+    this.id = id;
+    this.reference = reference;
+    this.ribEmetteur = ribEmetteur;
+    this.ribBeneficiaire = ribBeneficiaire;
+    this.motif = motif;
+    this.amount = amount;
+    this.dateExecution = dateExecution;
+    this.status = status;
+    this.dateUpdateStatus = dateUpdateStatus;
+  }
 
   public Long getId() {
     return id;
@@ -67,12 +84,12 @@ public class VirementDTO implements Serializable {
     this.motif = motif;
   }
 
-  public Date getDate() {
-    return date;
+  public Date getDateExecution() {
+    return dateExecution;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  public void setDateExecution(Date dateExecution) {
+    this.dateExecution = dateExecution;
   }
 
   public VirementStatus getStatus() {
@@ -83,11 +100,32 @@ public class VirementDTO implements Serializable {
     this.status = status;
   }
 
-  public Date getStatusUpdate() {
-    return statusUpdate;
+  public Date getDateUpdateStatus() {
+    return dateUpdateStatus;
   }
 
-  public void setStatusUpdate(Date statusUpdate) {
-    this.statusUpdate = statusUpdate;
+  public void setDateUpdateStatus(Date dateUpdateStatus) {
+    this.dateUpdateStatus = dateUpdateStatus;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    VirementDTO that = (VirementDTO) o;
+    return Objects.equals(id, that.id) &&
+            Objects.equals(reference, that.reference) &&
+            Objects.equals(ribEmetteur, that.ribEmetteur) &&
+            Objects.equals(ribBeneficiaire, that.ribBeneficiaire) &&
+            Objects.equals(motif, that.motif) &&
+            Objects.equals(amount, that.amount) &&
+            Objects.equals(dateExecution, that.dateExecution) &&
+            status == that.status &&
+            Objects.equals(dateUpdateStatus, that.dateUpdateStatus);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, reference, ribEmetteur, ribBeneficiaire, motif, amount, dateExecution, status, dateUpdateStatus);
   }
 }

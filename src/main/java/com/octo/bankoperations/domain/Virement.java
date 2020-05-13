@@ -17,14 +17,14 @@ public class Virement {
     private String reference;
 
     @Column(precision = 16, scale = 2, nullable = false)
-    private BigDecimal montantVirement;
+    private BigDecimal amount;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateExecution;
 
     @Column(length = 200)
-    private String motifVirement;
+    private String motif;
 
     @Column(length = 24)
     private String ribBeneficiaire;
@@ -54,12 +54,12 @@ public class Virement {
         this.reference = referance;
     }
 
-    public BigDecimal getMontantVirement() {
-        return montantVirement;
+    public BigDecimal getAmount() {
+        return amount;
     }
 
-    public void setMontantVirement(BigDecimal montantVirement) {
-        this.montantVirement = montantVirement;
+    public void setAmount(BigDecimal montantVirement) {
+        this.amount = montantVirement;
     }
 
     public Date getDateExecution() {
@@ -70,12 +70,12 @@ public class Virement {
         this.dateExecution = dateExecution;
     }
 
-    public String getMotifVirement() {
-        return motifVirement;
+    public String getMotif() {
+        return motif;
     }
 
-    public void setMotifVirement(String motifVirement) {
-        this.motifVirement = motifVirement;
+    public void setMotif(String motifVirement) {
+        this.motif = motifVirement;
     }
 
     public Long getId() {

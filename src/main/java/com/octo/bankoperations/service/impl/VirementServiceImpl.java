@@ -7,13 +7,13 @@ import com.octo.bankoperations.dto.BankTransferDTO;
 import com.octo.bankoperations.dto.VirementDTO;
 import com.octo.bankoperations.enums.VirementStatus;
 import com.octo.bankoperations.exceptions.CompteNonExistantException;
+import com.octo.bankoperations.exceptions.IllegalReceivedVirementStatusException;
 import com.octo.bankoperations.exceptions.SoldeDisponibleInsuffisantException;
+import com.octo.bankoperations.mapper.CompteMapper;
 import com.octo.bankoperations.mapper.VirementMapper;
-import com.octo.bankoperations.repository.CompteRepository;
 import com.octo.bankoperations.repository.VirementRepository;
 import com.octo.bankoperations.service.CompteService;
 import com.octo.bankoperations.service.VirementService;
-import com.octo.bankoperations.utils.AccountUtils;
 import com.octo.bankoperations.utils.VirementUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,21 +28,15 @@ import java.util.Optional;
 @Transactional
 public class VirementServiceImpl implements VirementService {
 
-    private final CompteRepository compteRepository;
     private final CompteService compteService;
     private final VirementRepository virementRepository;
-    private final InterBankTransferServiceVaultImpl interBankTransferServiceVault;
-    private final IntraBankTransferServiceVaultImpl intraBankTransferServiceVault;
     private final AMQPSender amqpSender;
 
     @Autowired
-    public VirementServiceImpl(CompteRepository compteRepository, CompteService compteService, VirementRepository virementRepository,
-                               InterBankTransferServiceVaultImpl interBankTransferServiceVault, IntraBankTransferServiceVaultImpl intraBankTransferServiceVault, AMQPSender sender) {
-        this.compteRepository = compteRepository;
+    public VirementServiceImpl(CompteService compteService,
+                               VirementRepository virementRepository, AMQPSender sender) {
         this.compteService = compteService;
         this.virementRepository = virementRepository;
-        this.interBankTransferServiceVault = interBankTransferServiceVault;
-        this.intraBankTransferServiceVault = intraBankTransferServiceVault;
         this.amqpSender = sender;
     }
 
@@ -57,75 +51,81 @@ public class VirementServiceImpl implements VirementService {
     }
 
     @Override
-    public List<Virement> findAllForUtilisateur(Long utilisateurId) {
-        Compte compte = compteService.getForUtilisateur(utilisateurId).orElseThrow(CompteNonExistantException::new);
+    public List<Virement> findAllForClient(Long clientId) {
+        Compte compte = compteService.getComptesForClient(clientId).orElseThrow(CompteNonExistantException::new);
         return virementRepository.findAllByRibEmetteurOrRibBeneficiaire(compte.getRib(), compte.getRib());
     }
 
     @Override
-    public void virement(VirementDTO virementDto) {
-        Compte compteEmetteur = compteRepository.findByRib(virementDto.getRibEmetteur())
+    public Virement virement(VirementDTO virementDto) {
+        Compte compteEmetteur = compteService.findByRib(virementDto.getRibEmetteur())
                 .orElseThrow(() -> new CompteNonExistantException(virementDto.getRibEmetteur()));
 
         if (compteEmetteur.getSolde().compareTo(virementDto.getAmount()) < 0) {
             throw new SoldeDisponibleInsuffisantException(
-                    "Solde insuffisant pour l'utilisateur " + compteEmetteur.getUtilisateur().getUsername());
+                    "Solde insuffisant pour le cllient " + compteEmetteur.getClient().getUsername());
         }
 
         Virement virement = new Virement();
         virement.setReference(VirementUtils.generateReference());
-        virement.setDateExecution(virementDto.getDate());
-        virement.setMontantVirement(virementDto.getAmount());
-        virement.setMotifVirement(virementDto.getMotif());
+        virement.setDateExecution(virementDto.getDateExecution());
+        virement.setAmount(virementDto.getAmount());
+        virement.setMotif(virementDto.getMotif());
         virement.setRibBeneficiaire(virementDto.getRibBeneficiaire());
         virement.setRibEmetteur(virementDto.getRibEmetteur());
+        virement.setDateUpdateStatus(new Date());
 
-        if(isVirementInterne(virementDto)){
-            Compte compteBeneficiaire = compteRepository.findByRib(virementDto.getRibBeneficiaire())
+        if (VirementUtils.isVirementInterne(virementDto)) {
+            Compte compteBeneficiaire = compteService.findByRib(virementDto.getRibBeneficiaire())
                     .orElseThrow(() -> new CompteNonExistantException(virementDto.getRibBeneficiaire()));
 
             compteBeneficiaire.setSolde(compteBeneficiaire.getSolde().add(virementDto.getAmount()));
-            compteRepository.save(compteBeneficiaire);
+            compteService.save(CompteMapper.map(compteBeneficiaire));
             compteEmetteur.setSolde(compteEmetteur.getSolde().subtract(virementDto.getAmount()));
-            compteRepository.save(compteEmetteur);
-            virement.setStatus(VirementStatus.INTERNE_NOT_SAVED_IN_CORDA);
+            compteService.save(CompteMapper.map(compteEmetteur));
+            virement.setStatus(VirementStatus.INTERNE_PENDING_SAVE_IN_CORDA);
+        } else {
+            virement.setStatus(VirementStatus.EXTERNE_PENDING_APPROVAL);
         }
-        else virement.setStatus(VirementStatus.EXTERNE_PENDING_APPROVAL);
 
         virementRepository.save(virement);
         BankTransferDTO bankTransferDTO = VirementMapper.mapToBankTransferDTO(virement);
         amqpSender.send(bankTransferDTO);
+        return virement;
     }
 
     /**
-     * Executed after consuming message from queue
+     * Change status of transfer initiated by our bank when successfully sent processed in Blockchain.
      * @param reference
      */
     @Override
-    public void virementInterneSavedToBlockchain(String reference) {
+    public Virement saveVirementAddedToBlockchain(String reference) {
         Virement virement = virementRepository.findByReference(reference).orElseThrow(EntityNotFoundException::new);
-        virement.setStatus(VirementStatus.INTERNE_SAVED_IN_CORDA);
+        if(VirementUtils.isVirementInterne(VirementMapper.map(virement))){
+            virement.setStatus(VirementStatus.INTERNE_SAVED_IN_CORDA);
+        } else {
+            virement.setStatus(VirementStatus.EXTERNE_APPROVED);
+        }
         virement.setDateUpdateStatus(new Date());
         virementRepository.save(virement);
+        return virement;
     }
 
+    /**
+     * Save a transfer initiated by another bank to our database. We receive the transfer details after it was
+     * processed by node.
+     * @param dto
+     * @return
+     */
     @Override
-    public void virementReceivedFromBlockchain(BankTransferDTO dto) {
-        Virement virement = new Virement();
-        virement.setReference(dto.getReference());
-        virement.setStatus(dto.getStatus());
-        virement.setRibEmetteur(dto.getSenderRIB());
-        virement.setRibBeneficiaire(dto.getReceiverRIB());
-        virement.setMontantVirement(dto.getAmount());
+    public Virement saveVirementReceivedFromBlockchain(BankTransferDTO dto) {
+        if(!dto.getStatus().equals(VirementStatus.EXTERNE_REJECTED) &&
+                !dto.getStatus().equals(VirementStatus.EXTERNE_APPROVED))
+            throw new IllegalReceivedVirementStatusException(dto.getStatus());
+        Virement virement = VirementMapper.mapToVirement(dto);
         virement.setDateUpdateStatus(new Date());
-
         virementRepository.save(virement);
-    }
-
-    private boolean isVirementInterne(VirementDTO virementDto) {
-        String codeBankEmetteur = AccountUtils.getBankCode(virementDto.getRibEmetteur());
-        String codeBankBeneficiaire = AccountUtils.getBankCode(virementDto.getRibBeneficiaire());
-        return AccountUtils.getBankCode(codeBankEmetteur).equals(AccountUtils.getBankCode(codeBankBeneficiaire));
+        return virement;
     }
 
 }

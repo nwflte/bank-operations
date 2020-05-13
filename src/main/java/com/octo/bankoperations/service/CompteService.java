@@ -9,11 +9,13 @@ import java.util.Optional;
 public interface CompteService {
     Optional<Compte> getById(Long id);
 
+    Optional<Compte> findByRib(String rib);
+
     List<Compte> getAll();
 
     boolean existsByRIB(String rib);
 
-    Optional<Compte> getForUtilisateur(Long id);
+    Optional<Compte> getComptesForClient(Long id);
 
-    void save(CompteDTO dto);
+    Compte save(CompteDTO dto);
 }

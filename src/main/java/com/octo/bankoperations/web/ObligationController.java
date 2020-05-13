@@ -33,7 +33,7 @@ public class ObligationController {
 
     @GetMapping(value = "{id}")
     public ResponseEntity<CordaDDRObligationDTO> getById(@PathVariable String id) {
-        return ResponseEntity.ok(obligationService.findObligationById(id).orElseThrow(() -> new ObligationNotFoundException(id)));
+        return ResponseEntity.ok(obligationService.findObligationByExternalId(id).orElseThrow(() -> new ObligationNotFoundException(id)));
     }
 
 }

@@ -12,13 +12,13 @@ public class VirementMapper {
         VirementDTO virementDto = new VirementDTO();
         virementDto.setReference(virement.getReference());
         virementDto.setId(virement.getId());
-        virementDto.setAmount(virement.getMontantVirement());
+        virementDto.setAmount(virement.getAmount());
         virementDto.setRibBeneficiaire(virement.getRibBeneficiaire());
         virementDto.setRibEmetteur(virement.getRibEmetteur());
-        virementDto.setDate(virement.getDateExecution());
-        virementDto.setMotif(virement.getMotifVirement());
+        virementDto.setDateExecution(virement.getDateExecution());
+        virementDto.setMotif(virement.getMotif());
         virementDto.setStatus(virement.getStatus());
-        virementDto.setStatusUpdate(virement.getDateUpdateStatus());
+        virementDto.setDateUpdateStatus(virement.getDateUpdateStatus());
         return virementDto;
 
     }
@@ -27,12 +27,24 @@ public class VirementMapper {
         if(virement == null) return null;
         BankTransferDTO bankTransferDTO = new BankTransferDTO();
         bankTransferDTO.setReference(virement.getReference());
-        bankTransferDTO.setAmount(virement.getMontantVirement());
+        bankTransferDTO.setAmount(virement.getAmount());
         bankTransferDTO.setExecutionDate(virement.getDateExecution());
         bankTransferDTO.setReceiverRIB(virement.getRibBeneficiaire());
         bankTransferDTO.setSenderRIB(virement.getRibEmetteur());
         bankTransferDTO.setStatus(virement.getStatus());
         bankTransferDTO.setStatusUpdate(virement.getDateUpdateStatus());
         return bankTransferDTO;
+    }
+
+    public static Virement mapToVirement(BankTransferDTO dto){
+        Virement virement = new Virement();
+        virement.setStatus(dto.getStatus());
+        virement.setDateExecution(dto.getExecutionDate());
+        virement.setRibEmetteur(dto.getSenderRIB());
+        virement.setRibBeneficiaire(dto.getReceiverRIB());
+        virement.setAmount(dto.getAmount());
+        virement.setReference(dto.getReference());
+        virement.setDateUpdateStatus(dto.getStatusUpdate());
+        return virement;
     }
 }

@@ -1,5 +1,7 @@
 package com.octo.bankoperations.dto;
 
+import java.util.Objects;
+
 public class ObligationUpdateDTO {
     private String externalId;
 
@@ -16,5 +18,18 @@ public class ObligationUpdateDTO {
 
     public void setExternalId(String externalId) {
         this.externalId = externalId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ObligationUpdateDTO that = (ObligationUpdateDTO) o;
+        return Objects.equals(externalId, that.externalId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(externalId);
     }
 }

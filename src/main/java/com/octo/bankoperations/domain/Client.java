@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "UTILISATEUR")
-public class Utilisateur {
+public class Client {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;

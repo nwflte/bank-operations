@@ -12,11 +12,11 @@ public interface VirementService {
 
     Optional<Virement> findById(Long id);
 
-    List<Virement> findAllForUtilisateur(Long utilisateurId);
+    List<Virement> findAllForClient(Long utilisateurId);
 
-    void virement(VirementDTO virementDto);
+    Virement virement(VirementDTO virementDto);
 
-    void virementInterneSavedToBlockchain(String reference);
+    Virement saveVirementAddedToBlockchain(String reference);
 
-    void virementReceivedFromBlockchain(BankTransferDTO dto);
+    Virement saveVirementReceivedFromBlockchain(BankTransferDTO dto);
 }

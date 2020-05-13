@@ -13,6 +13,7 @@ import org.keycloak.adapters.springsecurity.filter.KeycloakPreAuthActionsFilter;
 import org.keycloak.adapters.springsecurity.filter.KeycloakSecurityContextRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,11 +32,16 @@ import java.util.Collections;
 
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 @KeycloakConfiguration
+@ConditionalOnProperty(value = "keycloak.enabled", matchIfMissing = true)
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 {
 
+    public final KeycloakClientRequestFactory keycloakClientRequestFactory;
+
     @Autowired
-    public KeycloakClientRequestFactory keycloakClientRequestFactory;
+    public SecurityConfig(KeycloakClientRequestFactory keycloakClientRequestFactory) {
+        this.keycloakClientRequestFactory = keycloakClientRequestFactory;
+    }
 
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -117,7 +123,6 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
-        //configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

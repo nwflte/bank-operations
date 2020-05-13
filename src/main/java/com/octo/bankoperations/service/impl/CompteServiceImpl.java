@@ -1,11 +1,11 @@
 package com.octo.bankoperations.service.impl;
 
+import com.octo.bankoperations.domain.Client;
 import com.octo.bankoperations.domain.Compte;
-import com.octo.bankoperations.domain.Utilisateur;
 import com.octo.bankoperations.dto.CompteDTO;
-import com.octo.bankoperations.exceptions.UtilisateurNotFoundException;
+import com.octo.bankoperations.exceptions.ClientNotFoundException;
+import com.octo.bankoperations.repository.ClientRepository;
 import com.octo.bankoperations.repository.CompteRepository;
-import com.octo.bankoperations.repository.UtilisateurRepository;
 import com.octo.bankoperations.service.CompteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,17 +19,22 @@ import java.util.Optional;
 public class CompteServiceImpl implements CompteService {
 
     private final CompteRepository compteRepository;
-    private final UtilisateurRepository utilisateurRepository;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    public CompteServiceImpl(CompteRepository compteRepository, UtilisateurRepository utilisateurRepository) {
+    public CompteServiceImpl(CompteRepository compteRepository, ClientRepository clientRepository) {
         this.compteRepository = compteRepository;
-        this.utilisateurRepository = utilisateurRepository;
+        this.clientRepository = clientRepository;
     }
 
     @Override
     public Optional<Compte> getById(Long id) {
         return compteRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Compte> findByRib(String rib) {
+        return compteRepository.findByRib(rib);
     }
 
     @Override
@@ -43,19 +48,20 @@ public class CompteServiceImpl implements CompteService {
     }
 
     @Override
-    public Optional<Compte> getForUtilisateur(Long id) {
-        return compteRepository.findByUtilisateur_Id(id);
+    public Optional<Compte> getComptesForClient(Long id) {
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException(id));
+        return compteRepository.findByClient(client);
     }
 
     @Override
-    public void save(CompteDTO dto) {
+    public Compte save(CompteDTO dto) {
         Compte compte = new Compte();
         compte.setBlocked(dto.isBlocked());
         compte.setRib(dto.getRib());
         compte.setSolde(dto.getSolde());
-        Utilisateur utilisateur = utilisateurRepository.findById(dto.getUtilisateurId()).orElseThrow(() -> new UtilisateurNotFoundException(dto.getUtilisateurId())
+        Client client = clientRepository.findById(dto.getClientId()).orElseThrow(() -> new ClientNotFoundException(dto.getClientId())
         );
-        compte.setUtilisateur(utilisateur);
-        compteRepository.save(compte);
+        compte.setClient(client);
+        return compteRepository.save(compte);
     }
 }

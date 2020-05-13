@@ -24,7 +24,7 @@ public class PledgeController {
 
     @GetMapping(value = "{id}")
     public ResponseEntity<CordaDDRObligationDTO> getById(@PathVariable String id) {
-        return ResponseEntity.ok(obligationService.findPledgeById(id).orElseThrow(() -> new ObligationNotFoundException(id)));
+        return ResponseEntity.ok(obligationService.findPledgeByExternalId(id).orElseThrow(() -> new ObligationNotFoundException(id)));
     }
 
     @GetMapping

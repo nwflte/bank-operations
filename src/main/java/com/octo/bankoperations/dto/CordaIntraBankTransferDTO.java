@@ -2,6 +2,7 @@ package com.octo.bankoperations.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CordaIntraBankTransferDTO implements Serializable {
@@ -98,5 +99,25 @@ public class CordaIntraBankTransferDTO implements Serializable {
 
     public void setLinearId(UUID linearId) {
         this.linearId = linearId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CordaIntraBankTransferDTO that = (CordaIntraBankTransferDTO) o;
+        return amount == that.amount &&
+                Objects.equals(senderRIB, that.senderRIB) &&
+                Objects.equals(receiverRIB, that.receiverRIB) &&
+                Objects.equals(bank, that.bank) &&
+                Objects.equals(currency, that.currency) &&
+                Objects.equals(executionDate, that.executionDate) &&
+                Objects.equals(externalId, that.externalId) &&
+                Objects.equals(linearId, that.linearId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(senderRIB, receiverRIB, bank, amount, currency, executionDate, externalId, linearId);
     }
 }

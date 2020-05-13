@@ -25,16 +25,15 @@ class VirementController {
             .stream().map(VirementMapper::map).collect(Collectors.toList());
   }
 
-  @PostMapping("")
+  @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public void createTransaction(@RequestBody VirementDTO virementDto){
-    virementService.virement(virementDto);
+  public VirementDTO createTransaction(@RequestBody VirementDTO virementDto){
+    return VirementMapper.map(virementService.virement(virementDto));
   }
 
   @GetMapping("/{id}")
-  public Optional<VirementDTO> getById(@PathVariable Long id) {
-    return Optional.ofNullable(VirementMapper
-            .map(virementService.findById(id).orElseThrow(() -> new IllegalArgumentException(""))));
+  public VirementDTO getById(@PathVariable Long id) {
+    return VirementMapper.map(virementService.findById(id).orElseThrow(() -> new IllegalArgumentException("")));
   }
 
 
