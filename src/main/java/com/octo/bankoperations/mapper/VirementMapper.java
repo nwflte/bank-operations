@@ -7,6 +7,9 @@ import com.octo.bankoperations.dto.VirementDTO;
 
 public class VirementMapper {
 
+    private VirementMapper() {
+    }
+
     public static VirementDTO map(Virement virement) {
         if (virement == null) return null;
         VirementDTO virementDto = new VirementDTO();
@@ -24,7 +27,7 @@ public class VirementMapper {
     }
 
     public static BankTransferDTO mapToBankTransferDTO(Virement virement) {
-        if(virement == null) return null;
+        if (virement == null) return null;
         BankTransferDTO bankTransferDTO = new BankTransferDTO();
         bankTransferDTO.setReference(virement.getReference());
         bankTransferDTO.setAmount(virement.getAmount());
@@ -36,7 +39,7 @@ public class VirementMapper {
         return bankTransferDTO;
     }
 
-    public static Virement mapToVirement(BankTransferDTO dto){
+    public static Virement mapToVirement(BankTransferDTO dto) {
         Virement virement = new Virement();
         virement.setStatus(dto.getStatus());
         virement.setDateExecution(dto.getExecutionDate());

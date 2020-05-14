@@ -35,7 +35,7 @@ class ClientServiceTest {
 
     @Test
     void getAllTest() {
-        List<Client> expectedList = Arrays.asList(ModelsUtil.createClient( 1L), ModelsUtil.createClient( 2L));
+        List<Client> expectedList = Arrays.asList(ModelsUtil.createClient(1L), ModelsUtil.createClient(2L));
         given(clientRepository.findAll()).willReturn(expectedList);
 
         final List<Client> actualList = clientService.getAll();

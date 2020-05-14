@@ -96,12 +96,11 @@ public class VirementServiceImpl implements VirementService {
 
     /**
      * Change status of transfer initiated by our bank when successfully sent processed in Blockchain.
-     * @param reference
      */
     @Override
     public Virement saveVirementAddedToBlockchain(String reference) {
         Virement virement = virementRepository.findByReference(reference).orElseThrow(EntityNotFoundException::new);
-        if(VirementUtils.isVirementInterne(VirementMapper.map(virement))){
+        if (VirementUtils.isVirementInterne(VirementMapper.map(virement))) {
             virement.setStatus(VirementStatus.INTERNE_SAVED_IN_CORDA);
         } else {
             virement.setStatus(VirementStatus.EXTERNE_APPROVED);
@@ -114,12 +113,10 @@ public class VirementServiceImpl implements VirementService {
     /**
      * Save a transfer initiated by another bank to our database. We receive the transfer details after it was
      * processed by node.
-     * @param dto
-     * @return
      */
     @Override
     public Virement saveVirementReceivedFromBlockchain(BankTransferDTO dto) {
-        if(!dto.getStatus().equals(VirementStatus.EXTERNE_REJECTED) &&
+        if (!dto.getStatus().equals(VirementStatus.EXTERNE_REJECTED) &&
                 !dto.getStatus().equals(VirementStatus.EXTERNE_APPROVED))
             throw new IllegalReceivedVirementStatusException(dto.getStatus());
         Virement virement = VirementMapper.mapToVirement(dto);

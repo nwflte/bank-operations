@@ -4,20 +4,17 @@ import com.octo.bankoperations.dto.BankTransferDTO;
 import com.octo.bankoperations.dto.CordaInterBankTransferDTO;
 import com.octo.bankoperations.exceptions.TransferNotFoundException;
 import com.octo.bankoperations.service.InterBankTransferService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController()
 @RequestMapping("api/inter")
 public class InterBankTransferController {
-
-    private static final Logger logger = LoggerFactory.getLogger(InterBankTransferController.class);
 
     @Autowired
     private InterBankTransferService interBankTransferService;
@@ -33,8 +30,8 @@ public class InterBankTransferController {
     }
 
     @PostMapping(value = "perform-transfer")
-    public ResponseEntity<String> performTransfer(@RequestBody BankTransferDTO dto){
-        String signedTx = interBankTransferService.transfer(dto).get();
+    public ResponseEntity<String> performTransfer(@Valid @RequestBody BankTransferDTO dto) {
+        String signedTx = interBankTransferService.transfer(dto).orElse("");
         return ResponseEntity.status(HttpStatus.CREATED).body(signedTx);
     }
 

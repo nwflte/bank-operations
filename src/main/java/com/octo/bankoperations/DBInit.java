@@ -94,12 +94,10 @@ public class DBInit implements CommandLineRunner {
         virement2.setDateExecution(new Date());
         virement2.setAmount(BigDecimal.valueOf(1322));
         virement2.setMotif("Motif ext");
-        virement2.setRibBeneficiaire("444435444443");
+        virement2.setRibBeneficiaire("007787009200000000000002");
         virement2.setReference(VirementUtils.generateReference());
         virement2.setStatus(VirementStatus.INTERNE_PENDING_SAVE_IN_CORDA);
 
         virementRepository.saveAll(Arrays.asList(virement1, virement2));
-
-        System.out.println(constants);
     }
 }

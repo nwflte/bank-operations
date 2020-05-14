@@ -12,6 +12,6 @@ public interface InterBankTransferService {
 
     Optional<CordaInterBankTransferDTO> findById(String id);
 
-    Optional<String> transfer(BankTransferDTO dto) ;
+    Optional<String> transfer(BankTransferDTO dto);
 
 }

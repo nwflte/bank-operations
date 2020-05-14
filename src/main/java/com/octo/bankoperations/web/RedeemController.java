@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,9 +21,7 @@ public class RedeemController {
     private ObligationService obligationService;
 
     @GetMapping
-    public ResponseEntity<List<CordaDDRObligationDTO>> getAll(@RequestParam(value = "status", defaultValue = "all") String status ) {
-/*        if(!Arrays.stream(StateStatus.values()).anyMatch(val -> val.name().compareToIgnoreCase(status) == 0))
-            throw new*/
+    public ResponseEntity<List<CordaDDRObligationDTO>> getAll(@RequestParam(value = "status", defaultValue = "all") String status) {
         return ResponseEntity.ok(obligationService.loadAllRedeems(StateStatus.valueOf(status.toUpperCase())));
     }
 
@@ -32,26 +31,26 @@ public class RedeemController {
     }
 
     @PostMapping
-    public ResponseEntity<String> request(@RequestBody ObligationRequestDTO request) {
-        String signedTx = obligationService.createRedeem(request.getAmount()).get();
+    public ResponseEntity<String> request(@Valid @RequestBody ObligationRequestDTO request) {
+        String signedTx = obligationService.createRedeem(request.getAmount()).orElse("");
         return ResponseEntity.status(HttpStatus.CREATED).body(signedTx);
     }
 
     @PostMapping("cancel")
-    public ResponseEntity<String> cancelRedeem(@RequestBody ObligationUpdateDTO request)  {
-        String signedTx = obligationService.cancelRedeem(request.getExternalId()).get();
+    public ResponseEntity<String> cancelRedeem(@Valid @RequestBody ObligationUpdateDTO request) {
+        String signedTx = obligationService.cancelRedeem(request.getExternalId()).orElse("");
         return ResponseEntity.status(HttpStatus.OK).body(signedTx);
     }
 
     @PostMapping("deny")
-    public ResponseEntity<String> denyRedeem(@RequestBody ObligationUpdateDTO request) {
-        String signedTx = obligationService.denyRedeem(request.getExternalId()).get();
+    public ResponseEntity<String> denyRedeem(@Valid @RequestBody ObligationUpdateDTO request) {
+        String signedTx = obligationService.denyRedeem(request.getExternalId()).orElse("");
         return ResponseEntity.status(HttpStatus.OK).body(signedTx);
     }
 
     @PostMapping("approve")
-    public ResponseEntity<String> approveRedeem(@RequestBody ObligationUpdateDTO request) {
-        String signedTx = obligationService.approveRedeem(request.getExternalId()).get();
+    public ResponseEntity<String> approveRedeem(@Valid @RequestBody ObligationUpdateDTO request) {
+        String signedTx = obligationService.approveRedeem(request.getExternalId()).orElse("");
         return ResponseEntity.status(HttpStatus.OK).body(signedTx);
     }
 }

@@ -2,6 +2,9 @@ package com.octo.bankoperations.dto;
 
 import com.octo.bankoperations.enums.VirementStatus;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,9 +12,19 @@ import java.util.Objects;
 
 public class BankTransferDTO implements Serializable {
     private String reference;
+
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String senderRIB;
+
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String receiverRIB;
+
+    @NotNull
     private BigDecimal amount;
+
+    @NotNull
     private Date executionDate;
     private VirementStatus status;
     private Date statusUpdate;

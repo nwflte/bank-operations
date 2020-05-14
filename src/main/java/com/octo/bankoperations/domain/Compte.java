@@ -1,6 +1,8 @@
 package com.octo.bankoperations.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Entity
@@ -10,10 +12,12 @@ public class Compte {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(length = 24, unique = true)
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
+    @Column(length = 24, unique = true, updatable = false, nullable = false)
     private String rib;
 
-    @Column(precision = 16, scale = 2)
+    @Column(precision = 16, scale = 2, nullable = false)
     private BigDecimal solde;
 
     @ManyToOne

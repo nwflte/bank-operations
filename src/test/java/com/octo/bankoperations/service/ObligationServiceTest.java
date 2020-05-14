@@ -57,12 +57,13 @@ class ObligationServiceTest {
     private String url;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         url = constants.getNodeUrl() + "/api/obligations/";
         List<CordaDDRObligationDTO> expectedList = Arrays.asList(ModelsUtil.createObligation(PLEDGE, REQUEST),
                 ModelsUtil.createObligation(REDEEM, REQUEST));
         given(keycloakRestTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<CordaDDRObligationDTO>>(){}))
+                new ParameterizedTypeReference<List<CordaDDRObligationDTO>>() {
+                }))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body(expectedList));
     }
 
@@ -73,7 +74,8 @@ class ObligationServiceTest {
 
         Assertions.assertEquals(2, actualList.size());
         verify(keycloakRestTemplate, times(1)).exchange(url, HttpMethod.GET,
-                null, new ParameterizedTypeReference<List<CordaDDRObligationDTO>>(){});
+                null, new ParameterizedTypeReference<List<CordaDDRObligationDTO>>() {
+                });
     }
 
     @Test
@@ -94,8 +96,8 @@ class ObligationServiceTest {
     @EnumSource(DDRObligationType.class)
     void findObligationByExternalId(DDRObligationType type) {
         String id = "OBLIG_ID";
-        CordaDDRObligationDTO expectedObligation = ModelsUtil.createObligation(type, REQUEST,id);
-        given(keycloakRestTemplate.getForEntity(url+id, CordaDDRObligationDTO.class))
+        CordaDDRObligationDTO expectedObligation = ModelsUtil.createObligation(type, REQUEST, id);
+        given(keycloakRestTemplate.getForEntity(url + id, CordaDDRObligationDTO.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body(expectedObligation));
 
         Optional<CordaDDRObligationDTO> actualObligation = obligationService.findObligationByExternalId(id);
@@ -110,8 +112,8 @@ class ObligationServiceTest {
     @EnumSource(DDRObligationStatus.class)
     void findPledgeByExternalId(DDRObligationStatus status) {
         String id = "OBLIG_ID";
-        CordaDDRObligationDTO expectedObligation = ModelsUtil.createObligation(PLEDGE, status,id);
-        given(keycloakRestTemplate.getForEntity(url+id, CordaDDRObligationDTO.class))
+        CordaDDRObligationDTO expectedObligation = ModelsUtil.createObligation(PLEDGE, status, id);
+        given(keycloakRestTemplate.getForEntity(url + id, CordaDDRObligationDTO.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body(expectedObligation));
 
         Optional<CordaDDRObligationDTO> actualObligation = obligationService.findObligationByExternalId(id);
@@ -126,8 +128,8 @@ class ObligationServiceTest {
     @EnumSource(DDRObligationStatus.class)
     void findRedeemByExternalId(DDRObligationStatus status) {
         String id = "OBLIG_ID";
-        CordaDDRObligationDTO expectedObligation = ModelsUtil.createObligation(REDEEM, status,id);
-        given(keycloakRestTemplate.getForEntity(url+id, CordaDDRObligationDTO.class))
+        CordaDDRObligationDTO expectedObligation = ModelsUtil.createObligation(REDEEM, status, id);
+        given(keycloakRestTemplate.getForEntity(url + id, CordaDDRObligationDTO.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body(expectedObligation));
 
         Optional<CordaDDRObligationDTO> actualObligation = obligationService.findObligationByExternalId(id);
@@ -140,8 +142,8 @@ class ObligationServiceTest {
 
     @Test
     void createPledge() {
-        HttpEntity<ObligationRequestDTO> request = new HttpEntity<>(new ObligationRequestDTO(10));
-        given(keycloakRestTemplate.exchange(url+"request-pledge", HttpMethod.POST ,request, String.class))
+        HttpEntity<ObligationRequestDTO> request = new HttpEntity<>(new ObligationRequestDTO(10L));
+        given(keycloakRestTemplate.exchange(url + "request-pledge", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.createPledge(10);
@@ -149,13 +151,13 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"request-pledge", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "request-pledge", HttpMethod.POST, request, String.class);
     }
 
     @Test
     void cancelPledge() {
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO("EXTERNAL_ID"));
-        given(keycloakRestTemplate.exchange(url+"cancel-pledge", HttpMethod.POST ,request, String.class))
+        given(keycloakRestTemplate.exchange(url + "cancel-pledge", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.cancelPledge("EXTERNAL_ID");
@@ -163,13 +165,13 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"cancel-pledge", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "cancel-pledge", HttpMethod.POST, request, String.class);
     }
 
     @Test
     void denyPledge() {
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO("EXTERNAL_ID"));
-        given(keycloakRestTemplate.exchange(url+"deny-pledge", HttpMethod.POST ,request, String.class))
+        given(keycloakRestTemplate.exchange(url + "deny-pledge", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.denyPledge("EXTERNAL_ID");
@@ -177,13 +179,13 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"deny-pledge", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "deny-pledge", HttpMethod.POST, request, String.class);
     }
 
     @Test
     void approvePledge() {
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO("EXTERNAL_ID"));
-        given(keycloakRestTemplate.exchange(url+"approve-pledge", HttpMethod.POST ,request, String.class))
+        given(keycloakRestTemplate.exchange(url + "approve-pledge", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.approvePledge("EXTERNAL_ID");
@@ -191,13 +193,13 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"approve-pledge", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "approve-pledge", HttpMethod.POST, request, String.class);
     }
 
     @Test
     void createRedeem() {
-        HttpEntity<ObligationRequestDTO> request = new HttpEntity<>(new ObligationRequestDTO(10));
-        given(keycloakRestTemplate.exchange(url+"request-redeem", HttpMethod.POST ,request, String.class))
+        HttpEntity<ObligationRequestDTO> request = new HttpEntity<>(new ObligationRequestDTO(10L));
+        given(keycloakRestTemplate.exchange(url + "request-redeem", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.createRedeem(10);
@@ -205,13 +207,13 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"request-redeem", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "request-redeem", HttpMethod.POST, request, String.class);
     }
 
     @Test
     void cancelRedeem() {
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO("EXTERNAL_ID"));
-        given(keycloakRestTemplate.exchange(url+"cancel-redeem", HttpMethod.POST ,request, String.class))
+        given(keycloakRestTemplate.exchange(url + "cancel-redeem", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.cancelRedeem("EXTERNAL_ID");
@@ -219,13 +221,13 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"cancel-redeem", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "cancel-redeem", HttpMethod.POST, request, String.class);
     }
 
     @Test
     void denyRedeem() {
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO("EXTERNAL_ID"));
-        given(keycloakRestTemplate.exchange(url+"deny-redeem", HttpMethod.POST ,request, String.class))
+        given(keycloakRestTemplate.exchange(url + "deny-redeem", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.denyRedeem("EXTERNAL_ID");
@@ -233,13 +235,13 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"deny-redeem", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "deny-redeem", HttpMethod.POST, request, String.class);
     }
 
     @Test
     void approveRedeem() {
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO("EXTERNAL_ID"));
-        given(keycloakRestTemplate.exchange(url+"approve-redeem", HttpMethod.POST ,request, String.class))
+        given(keycloakRestTemplate.exchange(url + "approve-redeem", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = obligationService.approveRedeem("EXTERNAL_ID");
@@ -247,6 +249,6 @@ class ObligationServiceTest {
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"approve-redeem", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "approve-redeem", HttpMethod.POST, request, String.class);
     }
 }

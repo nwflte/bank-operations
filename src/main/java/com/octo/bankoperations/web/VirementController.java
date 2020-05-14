@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -16,25 +17,25 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "api/virements")
 class VirementController {
 
-  @Autowired
-  private VirementService virementService;
+    @Autowired
+    private VirementService virementService;
 
-  @GetMapping
-  public List<VirementDTO> loadAll() {
-    return Optional.ofNullable(virementService.loadAll()).orElse(Collections.emptyList())
-            .stream().map(VirementMapper::map).collect(Collectors.toList());
-  }
+    @GetMapping
+    public List<VirementDTO> loadAll() {
+        return Optional.ofNullable(virementService.loadAll()).orElse(Collections.emptyList())
+                .stream().map(VirementMapper::map).collect(Collectors.toList());
+    }
 
-  @PostMapping
-  @ResponseStatus(HttpStatus.CREATED)
-  public VirementDTO createTransaction(@RequestBody VirementDTO virementDto){
-    return VirementMapper.map(virementService.virement(virementDto));
-  }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public VirementDTO createTransaction(@Valid @RequestBody VirementDTO virementDto) {
+        return VirementMapper.map(virementService.virement(virementDto));
+    }
 
-  @GetMapping("/{id}")
-  public VirementDTO getById(@PathVariable Long id) {
-    return VirementMapper.map(virementService.findById(id).orElseThrow(() -> new IllegalArgumentException("")));
-  }
+    @GetMapping("/{id}")
+    public VirementDTO getById(@PathVariable Long id) {
+        return VirementMapper.map(virementService.findById(id).orElseThrow(() -> new IllegalArgumentException("")));
+    }
 
 
 }

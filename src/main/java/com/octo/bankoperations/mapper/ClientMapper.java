@@ -6,8 +6,11 @@ import com.octo.bankoperations.dto.ClientDTO;
 
 public class ClientMapper {
 
-    public static ClientDTO map(Client client){
-        if(client == null) return null;
+    private ClientMapper() {
+    }
+
+    public static ClientDTO map(Client client) {
+        if (client == null) return null;
         ClientDTO clientDTO = new ClientDTO();
         clientDTO.setId(client.getId());
         clientDTO.setFirstname(client.getFirstname());
@@ -22,7 +25,7 @@ public class ClientMapper {
         return clientDTO;
     }
 
-    public static Client map(ClientDTO dto){
+    public static Client map(ClientDTO dto) {
         Client client = new Client();
         client.setId(dto.getId());
         Adresse adresse = new Adresse();

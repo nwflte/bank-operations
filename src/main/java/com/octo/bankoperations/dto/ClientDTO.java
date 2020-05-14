@@ -3,6 +3,8 @@ package com.octo.bankoperations.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.octo.bankoperations.enums.Gender;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,18 +12,25 @@ import java.util.Objects;
 public class ClientDTO {
     private Long id;
 
+    @NotBlank
     private String username;
 
+    @NotNull
     private Gender gender;
 
+    @NotBlank
     private String lastname;
 
+    @NotBlank
     private String firstname;
 
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String ville;
 
+    @NotBlank
     private String adresse1;
 
     private String adresse2;

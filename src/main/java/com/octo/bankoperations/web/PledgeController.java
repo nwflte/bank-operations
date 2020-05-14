@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -28,31 +29,31 @@ public class PledgeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CordaDDRObligationDTO>> getAll(@RequestParam(value = "status", defaultValue = "all") String status ) {
+    public ResponseEntity<List<CordaDDRObligationDTO>> getAll(@RequestParam(value = "status", defaultValue = "all") String status) {
         return ResponseEntity.ok(obligationService.loadAllPledges(StateStatus.valueOf(status.toUpperCase())));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> request(@RequestBody ObligationRequestDTO request) {
-        String signedTx = obligationService.createPledge(request.getAmount()).get();
+    public ResponseEntity<String> request(@Valid @RequestBody ObligationRequestDTO request) {
+        String signedTx = obligationService.createPledge(request.getAmount()).orElse("");
         return ResponseEntity.status(HttpStatus.CREATED).body(signedTx);
     }
 
     @PostMapping("cancel")
-    public ResponseEntity<String> cancel(@RequestBody ObligationUpdateDTO request) {
-        String signedTx = obligationService.cancelPledge(request.getExternalId()).get();
+    public ResponseEntity<String> cancel(@Valid @RequestBody ObligationUpdateDTO request) {
+        String signedTx = obligationService.cancelPledge(request.getExternalId()).orElse("");
         return ResponseEntity.status(HttpStatus.OK).body(signedTx);
     }
 
     @PostMapping("deny")
-    public ResponseEntity<String> deny(@RequestBody ObligationUpdateDTO request){
-        String signedTx = obligationService.denyPledge(request.getExternalId()).get();
+    public ResponseEntity<String> deny(@Valid @RequestBody ObligationUpdateDTO request) {
+        String signedTx = obligationService.denyPledge(request.getExternalId()).orElse("");
         return ResponseEntity.status(HttpStatus.OK).body(signedTx);
     }
 
     @PostMapping("approve")
-    public ResponseEntity<String> approve(@RequestBody ObligationUpdateDTO request){
-        String signedTx = obligationService.approvePledge(request.getExternalId()).get();
+    public ResponseEntity<String> approve(@Valid @RequestBody ObligationUpdateDTO request) {
+        String signedTx = obligationService.approvePledge(request.getExternalId()).orElse("");
         return ResponseEntity.status(HttpStatus.OK).body(signedTx);
     }
 }

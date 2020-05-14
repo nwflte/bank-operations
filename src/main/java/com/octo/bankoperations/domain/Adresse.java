@@ -15,7 +15,7 @@ public class Adresse {
     @Column(length = 50, nullable = false)
     private String adresse1;
 
-    @Column(length = 50, nullable = true)
+    @Column(length = 50)
     private String adresse2;
 
     public Long getId() {

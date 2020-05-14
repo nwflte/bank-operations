@@ -19,35 +19,36 @@ import java.util.Optional;
 @Service
 public class IntraBankTransferServiceVaultImpl implements IntraBankTransferService {
 
-    private final String INTRA_BANK_URL ;
+    private final String intraBankUrl;
     private final KeycloakRestTemplate keycloakRestTemplate;
 
     @Autowired
     public IntraBankTransferServiceVaultImpl(KeycloakRestTemplate keycloakRestTemplate, Constants constants) {
         this.keycloakRestTemplate = keycloakRestTemplate;
-        INTRA_BANK_URL = constants.getNodeUrl() + "/api/intra/";
+        intraBankUrl = constants.getNodeUrl() + "/api/intra/";
     }
 
     @Override
     public List<CordaIntraBankTransferDTO> loadAll() {
-        ResponseEntity<List<CordaIntraBankTransferDTO>> response = keycloakRestTemplate.exchange(INTRA_BANK_URL, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<CordaIntraBankTransferDTO>>(){});
+        ResponseEntity<List<CordaIntraBankTransferDTO>> response = keycloakRestTemplate.exchange(intraBankUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<CordaIntraBankTransferDTO>>() {
+                });
         return response.getBody();
     }
 
     @Override
     public Optional<CordaIntraBankTransferDTO> findById(String id) {
-        String url = INTRA_BANK_URL + id;
+        String url = intraBankUrl + id;
         ResponseEntity<CordaIntraBankTransferDTO> response = keycloakRestTemplate.getForEntity(url, CordaIntraBankTransferDTO.class);
         return Optional.ofNullable(response.getBody());
     }
 
     @Override
     public Optional<String> transfer(BankTransferDTO dto) {
-        String url = INTRA_BANK_URL + "record-transfer";
+        String url = intraBankUrl + "record-transfer";
         dto.setStatus(VirementStatus.INTERNE_PENDING_SAVE_IN_CORDA);
         HttpEntity<BankTransferDTO> request = new HttpEntity<>(dto);
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST ,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 }

@@ -103,7 +103,7 @@ class CompteControllerTest {
     @WithMockUser
     void whenCreateCompte_ThenReturns201AndCompteDTO() throws Exception {
         Compte expectedCompte = ModelsUtil.createCompte("007111111111111111111111", 3L);
-        CompteDTO compteDTO = CompteMapper.map(expectedCompte) ;
+        CompteDTO compteDTO = CompteMapper.map(expectedCompte);
         given(compteService.save(any())).willReturn(expectedCompte);
 
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(REQUEST_PATH)

@@ -61,7 +61,8 @@ class IntraBankTransferServiceTest {
         List<CordaIntraBankTransferDTO> expectedList = Arrays.asList(ModelsUtil.createIntraBankTransfer(),
                 ModelsUtil.createIntraBankTransfer());
         given(keycloakRestTemplate.exchange(url, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<CordaIntraBankTransferDTO>>(){}))
+                new ParameterizedTypeReference<List<CordaIntraBankTransferDTO>>() {
+                }))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body(expectedList));
 
 
@@ -69,21 +70,22 @@ class IntraBankTransferServiceTest {
 
         Assertions.assertEquals(2, actualList.size());
         verify(keycloakRestTemplate, times(1)).exchange(url, HttpMethod.GET,
-                null, new ParameterizedTypeReference<List<CordaIntraBankTransferDTO>>(){});
+                null, new ParameterizedTypeReference<List<CordaIntraBankTransferDTO>>() {
+                });
     }
 
     @Test
     void findById() {
         String id = "OBLIG_ID";
         CordaIntraBankTransferDTO expectedTransfer = ModelsUtil.createIntraBankTransfer(id);
-        given(keycloakRestTemplate.getForEntity(url+id, CordaIntraBankTransferDTO.class))
+        given(keycloakRestTemplate.getForEntity(url + id, CordaIntraBankTransferDTO.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body(expectedTransfer));
 
         Optional<CordaIntraBankTransferDTO> actualTransfer = intraBankTransferService.findById(id);
 
         Assertions.assertTrue(actualTransfer.isPresent());
         Assertions.assertEquals(id, actualTransfer.get().getExternalId());
-        verify(keycloakRestTemplate, times(1)).getForEntity(url+id, CordaIntraBankTransferDTO.class);
+        verify(keycloakRestTemplate, times(1)).getForEntity(url + id, CordaIntraBankTransferDTO.class);
     }
 
     @Test
@@ -91,13 +93,13 @@ class IntraBankTransferServiceTest {
         BankTransferDTO dto = new BankTransferDTO("REF", "00811111111111111111111", "00711111111111111111111",
                 BigDecimal.valueOf(100), Date.from(Instant.parse("2020-05-01T15:23:01Z")), VirementStatus.INTERNE_PENDING_SAVE_IN_CORDA, null);
         HttpEntity<BankTransferDTO> request = new HttpEntity<>(dto);
-        given(keycloakRestTemplate.exchange(url+"record-transfer", HttpMethod.POST ,request, String.class))
+        given(keycloakRestTemplate.exchange(url + "record-transfer", HttpMethod.POST, request, String.class))
                 .willReturn(ResponseEntity.status(HttpStatus.OK).body("Signed Transaction"));
 
         Optional<String> actualResponse = intraBankTransferService.transfer(dto);
         Assertions.assertTrue(actualResponse.isPresent());
         Assertions.assertEquals("Signed Transaction", actualResponse.get());
 
-        verify(keycloakRestTemplate, times(1)).exchange(url+"record-transfer", HttpMethod.POST ,request, String.class);
+        verify(keycloakRestTemplate, times(1)).exchange(url + "record-transfer", HttpMethod.POST, request, String.class);
     }
 }

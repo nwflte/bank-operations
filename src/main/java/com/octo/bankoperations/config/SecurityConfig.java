@@ -33,8 +33,7 @@ import java.util.Collections;
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 @KeycloakConfiguration
 @ConditionalOnProperty(value = "keycloak.enabled", matchIfMissing = true)
-public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
-{
+public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     public final KeycloakClientRequestFactory keycloakClientRequestFactory;
 
@@ -67,8 +66,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
+    protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         // To access h2 console
         http.headers().frameOptions().sameOrigin().and()
@@ -121,7 +119,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Collections.singletonList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

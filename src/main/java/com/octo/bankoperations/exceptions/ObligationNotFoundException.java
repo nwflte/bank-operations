@@ -4,8 +4,7 @@ public class ObligationNotFoundException extends RuntimeException {
 
     private final String id;
 
-    public ObligationNotFoundException(String id)
-    {
+    public ObligationNotFoundException(String id) {
         super("Obligation could not be found with id: " + id);
         this.id = id;
     }

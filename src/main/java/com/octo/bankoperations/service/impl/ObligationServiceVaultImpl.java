@@ -35,7 +35,8 @@ public class ObligationServiceVaultImpl implements ObligationService {
     @Override
     public List<CordaDDRObligationDTO> loadAllObligations(StateStatus stateStatus) {
         ResponseEntity<List<CordaDDRObligationDTO>> response = keycloakRestTemplate.exchange(obligationsURL, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<CordaDDRObligationDTO>>(){});
+                new ParameterizedTypeReference<List<CordaDDRObligationDTO>>() {
+                });
         return response.getBody();
     }
 
@@ -76,7 +77,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> createPledge(long amount) {
         String url = obligationsURL + "request-pledge";
         HttpEntity<ObligationRequestDTO> request = new HttpEntity<>(new ObligationRequestDTO(amount));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST ,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 
@@ -84,7 +85,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> cancelPledge(String externalId) {
         String url = obligationsURL + "cancel-pledge";
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO(externalId));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 
@@ -92,7 +93,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> denyPledge(String externalId) {
         String url = obligationsURL + "deny-pledge";
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO(externalId));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 
@@ -100,7 +101,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> approvePledge(String externalId) {
         String url = obligationsURL + "approve-pledge";
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO(externalId));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 
@@ -108,7 +109,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> createRedeem(long amount) {
         String url = obligationsURL + "request-redeem";
         HttpEntity<ObligationRequestDTO> request = new HttpEntity<>(new ObligationRequestDTO(amount));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST ,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 
@@ -116,7 +117,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> cancelRedeem(String externalId) {
         String url = obligationsURL + "cancel-redeem";
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO(externalId));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 
@@ -124,7 +125,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> denyRedeem(String externalId) {
         String url = obligationsURL + "deny-redeem";
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO(externalId));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 
@@ -132,7 +133,7 @@ public class ObligationServiceVaultImpl implements ObligationService {
     public Optional<String> approveRedeem(String externalId) {
         String url = obligationsURL + "approve-redeem";
         HttpEntity<ObligationUpdateDTO> request = new HttpEntity<>(new ObligationUpdateDTO(externalId));
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 }

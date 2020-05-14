@@ -3,6 +3,10 @@ package com.octo.bankoperations.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.octo.bankoperations.enums.VirementStatus;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,122 +14,135 @@ import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VirementDTO implements Serializable {
-  private Long id;
-  private String reference;
-  private String ribEmetteur;
-  private String ribBeneficiaire;
-  private String motif;
-  private BigDecimal amount;
-  private Date dateExecution;
-  private VirementStatus status;
-  private Date dateUpdateStatus;
+    private Long id;
+    private String reference;
 
-  public VirementDTO() {
-  }
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
+    private String ribEmetteur;
 
-  public VirementDTO(Long id, String reference, String ribEmetteur, String ribBeneficiaire, String motif, BigDecimal amount,
-                     Date dateExecution, VirementStatus status, Date dateUpdateStatus) {
-    this.id = id;
-    this.reference = reference;
-    this.ribEmetteur = ribEmetteur;
-    this.ribBeneficiaire = ribBeneficiaire;
-    this.motif = motif;
-    this.amount = amount;
-    this.dateExecution = dateExecution;
-    this.status = status;
-    this.dateUpdateStatus = dateUpdateStatus;
-  }
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
+    private String ribBeneficiaire;
 
-  public Long getId() {
-    return id;
-  }
+    @NotBlank
+    private String motif;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    @NotNull
+    private BigDecimal amount;
 
-  public String getReference() {
-    return reference;
-  }
+    @NotNull
+    private Date dateExecution;
 
-  public void setReference(String reference) {
-    this.reference = reference;
-  }
+    private VirementStatus status;
+    private Date dateUpdateStatus;
 
-  public String getRibEmetteur() {
-    return ribEmetteur;
-  }
+    public VirementDTO() {
+    }
 
-  public void setRibEmetteur(String ribEmetteur) {
-    this.ribEmetteur = ribEmetteur;
-  }
+    public VirementDTO(Long id, String reference, String ribEmetteur, String ribBeneficiaire, String motif, BigDecimal amount,
+                       Date dateExecution, VirementStatus status, Date dateUpdateStatus) {
+        this.id = id;
+        this.reference = reference;
+        this.ribEmetteur = ribEmetteur;
+        this.ribBeneficiaire = ribBeneficiaire;
+        this.motif = motif;
+        this.amount = amount;
+        this.dateExecution = dateExecution;
+        this.status = status;
+        this.dateUpdateStatus = dateUpdateStatus;
+    }
 
-  public String getRibBeneficiaire() {
-    return ribBeneficiaire;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public void setRibBeneficiaire(String ribBeneficiaire) {
-    this.ribBeneficiaire = ribBeneficiaire;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public BigDecimal getAmount() {
-    return amount;
-  }
+    public String getReference() {
+        return reference;
+    }
 
-  public void setAmount(BigDecimal amount) {
-    this.amount = amount;
-  }
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
 
-  public String getMotif() {
-    return motif;
-  }
+    public String getRibEmetteur() {
+        return ribEmetteur;
+    }
 
-  public void setMotif(String motif) {
-    this.motif = motif;
-  }
+    public void setRibEmetteur(String ribEmetteur) {
+        this.ribEmetteur = ribEmetteur;
+    }
 
-  public Date getDateExecution() {
-    return dateExecution;
-  }
+    public String getRibBeneficiaire() {
+        return ribBeneficiaire;
+    }
 
-  public void setDateExecution(Date dateExecution) {
-    this.dateExecution = dateExecution;
-  }
+    public void setRibBeneficiaire(String ribBeneficiaire) {
+        this.ribBeneficiaire = ribBeneficiaire;
+    }
 
-  public VirementStatus getStatus() {
-    return status;
-  }
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
-  public void setStatus(VirementStatus status) {
-    this.status = status;
-  }
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
-  public Date getDateUpdateStatus() {
-    return dateUpdateStatus;
-  }
+    public String getMotif() {
+        return motif;
+    }
 
-  public void setDateUpdateStatus(Date dateUpdateStatus) {
-    this.dateUpdateStatus = dateUpdateStatus;
-  }
+    public void setMotif(String motif) {
+        this.motif = motif;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    VirementDTO that = (VirementDTO) o;
-    return Objects.equals(id, that.id) &&
-            Objects.equals(reference, that.reference) &&
-            Objects.equals(ribEmetteur, that.ribEmetteur) &&
-            Objects.equals(ribBeneficiaire, that.ribBeneficiaire) &&
-            Objects.equals(motif, that.motif) &&
-            Objects.equals(amount, that.amount) &&
-            Objects.equals(dateExecution, that.dateExecution) &&
-            status == that.status &&
-            Objects.equals(dateUpdateStatus, that.dateUpdateStatus);
-  }
+    public Date getDateExecution() {
+        return dateExecution;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, reference, ribEmetteur, ribBeneficiaire, motif, amount, dateExecution, status, dateUpdateStatus);
-  }
+    public void setDateExecution(Date dateExecution) {
+        this.dateExecution = dateExecution;
+    }
+
+    public VirementStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VirementStatus status) {
+        this.status = status;
+    }
+
+    public Date getDateUpdateStatus() {
+        return dateUpdateStatus;
+    }
+
+    public void setDateUpdateStatus(Date dateUpdateStatus) {
+        this.dateUpdateStatus = dateUpdateStatus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VirementDTO that = (VirementDTO) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(reference, that.reference) &&
+                Objects.equals(ribEmetteur, that.ribEmetteur) &&
+                Objects.equals(ribBeneficiaire, that.ribBeneficiaire) &&
+                Objects.equals(motif, that.motif) &&
+                Objects.equals(amount, that.amount) &&
+                Objects.equals(dateExecution, that.dateExecution) &&
+                status == that.status &&
+                Objects.equals(dateUpdateStatus, that.dateUpdateStatus);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, reference, ribEmetteur, ribBeneficiaire, motif, amount, dateExecution, status, dateUpdateStatus);
+    }
 }

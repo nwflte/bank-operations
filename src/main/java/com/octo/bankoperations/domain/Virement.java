@@ -3,6 +3,8 @@ package com.octo.bankoperations.domain;
 import com.octo.bankoperations.enums.VirementStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,23 +15,27 @@ public class Virement {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false, updatable = false)
     private String reference;
 
     @Column(precision = 16, scale = 2, nullable = false)
     private BigDecimal amount;
 
-    @Column
+    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateExecution;
 
     @Column(length = 200)
     private String motif;
 
-    @Column(length = 24)
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
+    @Column(length = 24, nullable = false, updatable = false)
     private String ribBeneficiaire;
 
-    @Column(length = 24)
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
+    @Column(length = 24, nullable = false, updatable = false)
     private String ribEmetteur;
 
     @Column

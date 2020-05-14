@@ -23,6 +23,6 @@ public class AMQPSender {
 
     public void send(BankTransferDTO transfer) {
         this.amqpTemplate.convertAndSend(queueVirement.getName(), transfer);
-        logger.info(" [x] Sent '{}'" ,transfer);
+        logger.info(" [x] Sent '{}'", transfer);
     }
 }

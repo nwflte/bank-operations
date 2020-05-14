@@ -55,9 +55,9 @@ public class ModelsUtil {
 
     public static Virement createVirement(String ribEmetteur, String ribBeneficiaire, BigDecimal montant) {
         final Virement virement = createVirement();
-        if(montant != null) virement.setAmount(montant);
-        if(ribBeneficiaire != null) virement.setRibBeneficiaire(ribBeneficiaire);
-        if(ribEmetteur != null) virement.setRibEmetteur(ribEmetteur);
+        if (montant != null) virement.setAmount(montant);
+        if (ribBeneficiaire != null) virement.setRibBeneficiaire(ribBeneficiaire);
+        if (ribEmetteur != null) virement.setRibEmetteur(ribEmetteur);
         return virement;
     }
 
@@ -95,14 +95,14 @@ public class ModelsUtil {
 
     public static Compte createCompte(String rib, Long clientId, BigDecimal solde, Long compteId) {
         final Compte compte = createCompte(rib, clientId);
-        if(solde != null) compte.setSolde(solde);
-        if(compteId != null) compte.setId(compteId);
+        if (solde != null) compte.setSolde(solde);
+        if (compteId != null) compte.setId(compteId);
         return compte;
     }
 
     public static CordaDDRObligationDTO createObligation(DDRObligationType type, DDRObligationStatus status) {
         CordaDDRObligationDTO pledge = new CordaDDRObligationDTO();
-        pledge.setAmount(12);
+        pledge.setAmount(12L);
         pledge.setCurrency("MAD");
         pledge.setExternalId("KFKFKLLLDD");
         pledge.setIssuer("ISSUER");
@@ -125,7 +125,7 @@ public class ModelsUtil {
 
     public static CordaIntraBankTransferDTO createIntraBankTransfer() {
         CordaIntraBankTransferDTO dto = new CordaIntraBankTransferDTO();
-        dto.setAmount(100);
+        dto.setAmount(100L);
         dto.setBank("BankA");
         dto.setCurrency("MAD");
         dto.setExecutionDate(Date.from(Instant.parse("2020-05-01T15:23:01Z")));

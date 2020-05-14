@@ -1,17 +1,24 @@
 package com.octo.bankoperations.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class CompteDTO {
     private Long id;
 
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String rib;
 
+    @NotNull
     private BigDecimal solde;
 
     private boolean blocked;
 
+    @NotNull
     private Long clientId;
 
     public CompteDTO() {

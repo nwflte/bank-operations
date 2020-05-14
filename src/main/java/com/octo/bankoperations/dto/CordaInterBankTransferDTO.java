@@ -1,5 +1,9 @@
 package com.octo.bankoperations.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -7,22 +11,32 @@ import java.util.UUID;
 
 public class CordaInterBankTransferDTO implements Serializable {
 
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String senderRIB;
 
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String receiverRIB;
 
+    @NotBlank
     private String senderBank;
 
+    @NotBlank
     private String receiverBank;
 
+    @NotNull
     private long amount;
 
     private String currency;
 
+    @NotNull
     private Date executionDate;
 
+    @NotBlank
     private String externalId;
 
+    @NotNull
     private UUID linearId;
 
     public CordaInterBankTransferDTO() {

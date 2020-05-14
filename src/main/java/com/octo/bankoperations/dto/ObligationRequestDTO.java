@@ -1,23 +1,23 @@
 package com.octo.bankoperations.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 public class ObligationRequestDTO {
-    private long amount;
-
+    private @NotNull Long amount;
 
     public ObligationRequestDTO() {
     }
 
-    public ObligationRequestDTO(long amount) {
+    public ObligationRequestDTO(Long amount) {
         this.amount = amount;
     }
 
-    public long getAmount() {
+    public @NotNull Long getAmount() {
         return amount;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(@NotNull Long amount) {
         this.amount = amount;
     }
 
@@ -26,7 +26,7 @@ public class ObligationRequestDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ObligationRequestDTO that = (ObligationRequestDTO) o;
-        return amount == that.amount;
+        return Objects.equals(amount, that.amount);
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.octo.bankoperations.web.common;
 
 import com.octo.bankoperations.exceptions.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,8 +14,6 @@ import java.util.concurrent.ExecutionException;
 
 @ControllerAdvice
 public class ExceptionHandlingController extends ResponseEntityExceptionHandler {
-
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlingController.class);
 
     @ExceptionHandler(ConnectException.class)
     public ResponseEntity<String> connectionException(ConnectException ex, WebRequest request) {
@@ -61,10 +57,10 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
 
 
     private ResponseEntity<String> error(final Exception exception, final HttpStatus httpStatus) {
-        if(exception instanceof IndexOutOfBoundsException)
-            return new ResponseEntity<>("" , httpStatus);
+        if (exception instanceof IndexOutOfBoundsException)
+            return new ResponseEntity<>("", httpStatus);
         final String message = Optional.of(exception.getMessage()).orElse(exception.getClass().getSimpleName());
         logger.error(exception.getMessage(), exception);
-        return new ResponseEntity<>(message , httpStatus);
+        return new ResponseEntity<>(message, httpStatus);
     }
 }

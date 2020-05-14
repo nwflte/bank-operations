@@ -1,28 +1,40 @@
 package com.octo.bankoperations.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
 public class CordaIntraBankTransferDTO implements Serializable {
+
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String senderRIB;
 
+    @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
+    @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String receiverRIB;
 
+    @NotBlank
     private String bank;
 
-    private long amount;
+    private @NotNull Long amount;
 
     private String currency;
 
-    private Date executionDate;
+    private @NotNull Date executionDate;
 
+    @NotBlank
     private String externalId;
 
+    @NotNull
     private UUID linearId;
 
-    public CordaIntraBankTransferDTO(String senderRIB, String receiverRIB, String bank, long amount, String currency, Date executionDate,
+    public CordaIntraBankTransferDTO(String senderRIB, String receiverRIB, String bank, Long amount, String currency, Date executionDate,
                                      String externalId, UUID linearId) {
         this.senderRIB = senderRIB;
         this.receiverRIB = receiverRIB;
@@ -49,7 +61,7 @@ public class CordaIntraBankTransferDTO implements Serializable {
         return bank;
     }
 
-    public long getAmount() {
+    public @NotNull Long getAmount() {
         return amount;
     }
 
@@ -81,7 +93,7 @@ public class CordaIntraBankTransferDTO implements Serializable {
         this.bank = bank;
     }
 
-    public void setAmount(long amount) {
+    public void setAmount(@NotNull Long amount) {
         this.amount = amount;
     }
 
@@ -106,10 +118,10 @@ public class CordaIntraBankTransferDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CordaIntraBankTransferDTO that = (CordaIntraBankTransferDTO) o;
-        return amount == that.amount &&
-                Objects.equals(senderRIB, that.senderRIB) &&
+        return Objects.equals(senderRIB, that.senderRIB) &&
                 Objects.equals(receiverRIB, that.receiverRIB) &&
                 Objects.equals(bank, that.bank) &&
+                Objects.equals(amount, that.amount) &&
                 Objects.equals(currency, that.currency) &&
                 Objects.equals(executionDate, that.executionDate) &&
                 Objects.equals(externalId, that.externalId) &&

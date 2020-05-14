@@ -19,36 +19,37 @@ import java.util.Optional;
 @Service
 public class InterBankTransferServiceVaultImpl implements InterBankTransferService {
 
-    private final String INTER_BANK_URL;
+    private final String interBankUrl;
 
     private final KeycloakRestTemplate keycloakRestTemplate;
 
     @Autowired
     public InterBankTransferServiceVaultImpl(KeycloakRestTemplate template, Constants constants) {
         this.keycloakRestTemplate = template;
-        INTER_BANK_URL = constants.getNodeUrl() + "/api/inter/";
+        interBankUrl = constants.getNodeUrl() + "/api/inter/";
     }
 
     @Override
     public List<CordaInterBankTransferDTO> loadAll() {
-        ResponseEntity<List<CordaInterBankTransferDTO>> response = keycloakRestTemplate.exchange(INTER_BANK_URL, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<CordaInterBankTransferDTO>>(){});
+        ResponseEntity<List<CordaInterBankTransferDTO>> response = keycloakRestTemplate.exchange(interBankUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<CordaInterBankTransferDTO>>() {
+                });
         return response.getBody();
     }
 
     @Override
     public Optional<CordaInterBankTransferDTO> findById(String id) {
-        String url = INTER_BANK_URL + id;
+        String url = interBankUrl + id;
         ResponseEntity<CordaInterBankTransferDTO> response = keycloakRestTemplate.getForEntity(url, CordaInterBankTransferDTO.class);
         return Optional.ofNullable(response.getBody());
     }
 
     @Override
     public Optional<String> transfer(BankTransferDTO dto) {
-        String url = INTER_BANK_URL + "perform-transfer";
+        String url = interBankUrl + "perform-transfer";
         dto.setStatus(VirementStatus.EXTERNE_PENDING_APPROVAL);
         HttpEntity<BankTransferDTO> request = new HttpEntity<>(dto);
-        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST ,request, String.class);
+        ResponseEntity<String> response = keycloakRestTemplate.exchange(url, HttpMethod.POST, request, String.class);
         return Optional.ofNullable(response.getBody());
     }
 }
