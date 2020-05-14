@@ -76,14 +76,14 @@ public class VirementServiceTest {
     public void findAllForClientTest() {
         final String rib = "007787009200000000000000";
         given(compteService.getComptesForClient(1L)).willReturn(Optional.of(ModelsUtil.createCompte(rib, 1L)));
-        given(virementRepository.findAllByRibEmetteurOrRibBeneficiaire(rib, rib))
+        given(virementRepository.findVirementsByRibEmetteurOrRibBeneficiaire(rib, rib))
                 .willReturn(Collections.singletonList(createVirement(rib, null, null)));
 
         final List<Virement> virements = virementService.findAllForClient(1L);
 
         Assertions.assertNotNull(virements);
         Assertions.assertEquals(1, virements.size());
-        verify(virementRepository, times(1)).findAllByRibEmetteurOrRibBeneficiaire(rib, rib);
+        verify(virementRepository, times(1)).findVirementsByRibEmetteurOrRibBeneficiaire(rib, rib);
         verify(compteService, times(1)).getComptesForClient(1L);
     }
 

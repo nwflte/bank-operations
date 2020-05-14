@@ -53,7 +53,7 @@ public class VirementServiceImpl implements VirementService {
     @Override
     public List<Virement> findAllForClient(Long clientId) {
         Compte compte = compteService.getComptesForClient(clientId).orElseThrow(CompteNonExistantException::new);
-        return virementRepository.findAllByRibEmetteurOrRibBeneficiaire(compte.getRib(), compte.getRib());
+        return virementRepository.findVirementsByRibEmetteurOrRibBeneficiaire(compte.getRib(), compte.getRib());
     }
 
     @Override

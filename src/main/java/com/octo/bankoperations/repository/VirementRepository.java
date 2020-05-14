@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VirementRepository extends JpaRepository<Virement, Long> {
-    List<Virement> findAllByRibEmetteurOrRibBeneficiaire(String ribEmetteur, String ribBeneficaire);
+    List<Virement> findVirementsByRibEmetteurOrRibBeneficiaire(String ribEmetteur, String ribBeneficaire);
 
     Optional<Virement> findByReference(String reference);
 }
