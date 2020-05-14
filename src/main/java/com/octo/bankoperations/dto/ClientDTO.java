@@ -12,25 +12,25 @@ import java.util.Objects;
 public class ClientDTO {
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Username cannot be blank")
     private String username;
 
-    @NotNull
+    @NotNull(message = "Gender cannot be null")
     private Gender gender;
 
-    @NotBlank
+    @NotBlank(message = "Lastname cannot be blank")
     private String lastname;
 
-    @NotBlank
+    @NotBlank(message = "Firstname cannot be blank")
     private String firstname;
 
-    @NotBlank
+    @NotBlank(message = "Email cannot be blank")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Ville cannot be blank")
     private String ville;
 
-    @NotBlank
+    @NotBlank(message = "Adresse 1 cannot be blank")
     private String adresse1;
 
     private String adresse2;

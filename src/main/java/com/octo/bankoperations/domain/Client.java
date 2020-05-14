@@ -34,6 +34,7 @@ public class Client {
     private Date birthdate;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "compte_id", unique = true)
     private Compte compte;
 
     public Gender getGender() {

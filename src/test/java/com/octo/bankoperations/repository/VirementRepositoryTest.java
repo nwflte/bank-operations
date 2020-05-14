@@ -47,7 +47,6 @@ class VirementRepositoryTest {
 
     @Test
     void findVirementByReference_ReturnsVirement() {
-
         Optional<Virement> actualResult = virementRepository.findByReference("REF2");
 
         Assertions.assertTrue(actualResult.isPresent());
@@ -56,7 +55,6 @@ class VirementRepositoryTest {
 
     @Test
     void findVirementByBadReference_ReturnsEmptyOptional() {
-
         Optional<Virement> actualResult = virementRepository.findByReference("REF3");
 
         Assertions.assertFalse(actualResult.isPresent());

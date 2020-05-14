@@ -2,6 +2,7 @@ package com.octo.bankoperations.dto;
 
 import com.octo.bankoperations.enums.VirementStatus;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -21,10 +22,11 @@ public class BankTransferDTO implements Serializable {
     @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String receiverRIB;
 
-    @NotNull
+    @NotNull(message = "Amount must not be null")
+    @Min(value = 1, message = "Amount must be bigger than 0")
     private BigDecimal amount;
 
-    @NotNull
+    @NotNull(message = "Date d'execution must not be null")
     private Date executionDate;
     private VirementStatus status;
     private Date statusUpdate;

@@ -14,14 +14,14 @@ public class Compte {
 
     @Pattern(regexp = "\\d+", message = "RIB Should contain digits only")
     @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
-    @Column(length = 24, unique = true, updatable = false, nullable = false)
+    @Column(unique = true, updatable = false, nullable = false)
     private String rib;
 
     @Column(precision = 16, scale = 2, nullable = false)
     private BigDecimal solde;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", unique = true)
     private Client client;
 
     @Column

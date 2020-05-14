@@ -13,12 +13,12 @@ public class CompteDTO {
     @Size(min = 24, max = 24, message = "RIB should be 24 digits long")
     private String rib;
 
-    @NotNull
+    @NotNull(message = "Solde cannot be null")
     private BigDecimal solde;
 
     private boolean blocked;
 
-    @NotNull
+    @NotNull(message = "Gender cannot be null")
     private Long clientId;
 
     public CompteDTO() {

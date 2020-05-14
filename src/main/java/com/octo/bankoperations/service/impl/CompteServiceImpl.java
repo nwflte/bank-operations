@@ -62,6 +62,14 @@ public class CompteServiceImpl implements CompteService {
         Client client = clientRepository.findById(dto.getClientId()).orElseThrow(() -> new ClientNotFoundException(dto.getClientId())
         );
         compte.setClient(client);
+        compte = compteRepository.save(compte);
+        client.setCompte(compte);
+        clientRepository.save(client);
+        return compte;
+    }
+
+    @Override
+    public Compte save(Compte compte) {
         return compteRepository.save(compte);
     }
 }

@@ -80,9 +80,9 @@ public class VirementServiceImpl implements VirementService {
                     .orElseThrow(() -> new CompteNonExistantException(virementDto.getRibBeneficiaire()));
 
             compteBeneficiaire.setSolde(compteBeneficiaire.getSolde().add(virementDto.getAmount()));
-            compteService.save(CompteMapper.map(compteBeneficiaire));
+            compteService.save(compteBeneficiaire);
             compteEmetteur.setSolde(compteEmetteur.getSolde().subtract(virementDto.getAmount()));
-            compteService.save(CompteMapper.map(compteEmetteur));
+            compteService.save(compteEmetteur);
             virement.setStatus(VirementStatus.INTERNE_PENDING_SAVE_IN_CORDA);
         } else {
             virement.setStatus(VirementStatus.EXTERNE_PENDING_APPROVAL);

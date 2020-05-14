@@ -138,7 +138,7 @@ class CompteServiceTest {
     }
 
     @Test
-    void saveTest() {
+    void saveCompteTest() {
         CompteDTO dto = new CompteDTO(1L, "007111111111111111111112", BigDecimal.valueOf(100), false, 3L);
         given(compteRepository.save(Mockito.any(Compte.class)))
                 .willReturn(ModelsUtil.createCompte("007111111111111111111112", 3L, null, 1L));
@@ -151,7 +151,7 @@ class CompteServiceTest {
         Assertions.assertEquals(1L, actualCompte.getId());
         Assertions.assertEquals(3L, actualCompte.getClient().getId());
         Assertions.assertEquals("007111111111111111111112", actualCompte.getRib());
-        verify(compteRepository, times(1)).save(Mockito.any());
+        verify(compteRepository, times(1)).save(Mockito.any(Compte.class));
     }
 
     @Test

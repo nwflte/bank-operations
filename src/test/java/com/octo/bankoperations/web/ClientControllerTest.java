@@ -104,7 +104,7 @@ class ClientControllerTest {
     @WithMockUser
     void whenCreateClient_ThenReturns201AndClientDTO() throws Exception {
         ClientDTO clientDTO = ClientMapper.map(ModelsUtil.createClient(3L));
-        given(clientService.save(any())).willReturn(ModelsUtil.createClient(3L));
+        given(clientService.save(any(ClientDTO.class))).willReturn(ModelsUtil.createClient(3L));
 
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(REQUEST_PATH)
                 .contentType(MediaType.APPLICATION_JSON)

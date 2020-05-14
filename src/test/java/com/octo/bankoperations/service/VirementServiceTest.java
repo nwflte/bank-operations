@@ -104,7 +104,7 @@ public class VirementServiceTest {
         Compte compteBeneficiaire = ModelsUtil.createCompte(ribBeneficiaire, 1L, BigDecimal.valueOf(100), null);
         given(compteService.findByRib(expectedVirement.getRibBeneficiaire())).willReturn(Optional.of(compteBeneficiaire));
         given(compteService.findByRib(expectedVirement.getRibEmetteur())).willReturn(Optional.of(compteEmetteur));
-        given(compteService.save(any())).willReturn(null);
+        given(compteService.save(any(Compte.class))).willReturn(null);
         given(virementRepository.save(any())).willReturn(null);
         doNothing().when(amqpSender).send(any());
 
@@ -118,7 +118,7 @@ public class VirementServiceTest {
         Assertions.assertEquals(BigDecimal.valueOf(110), compteBeneficiaire.getSolde());
 
         verify(compteService, times(2)).findByRib(anyString());
-        verify(compteService, times(2)).save(any());
+        verify(compteService, times(2)).save(any(Compte.class));
         verify(amqpSender, times(1)).send(any());
     }
 

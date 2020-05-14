@@ -1,6 +1,7 @@
 package com.octo.bankoperations.service.impl;
 
 import com.octo.bankoperations.domain.Client;
+import com.octo.bankoperations.domain.Compte;
 import com.octo.bankoperations.dto.ClientDTO;
 import com.octo.bankoperations.mapper.ClientMapper;
 import com.octo.bankoperations.repository.ClientRepository;
@@ -36,5 +37,10 @@ public class ClientServiceImpl implements ClientService {
         Client client = ClientMapper.map(dto);
         clientRepository.save(client);
         return client;
+    }
+
+    @Override
+    public Client save(Client client) {
+        return clientRepository.save(client);
     }
 }

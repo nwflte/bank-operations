@@ -1,8 +1,11 @@
 package com.octo.bankoperations.web.common;
 
 import com.octo.bankoperations.exceptions.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -55,6 +58,16 @@ public class ExceptionHandlingController extends ResponseEntityExceptionHandler 
         return error(e, HttpStatus.NOT_FOUND);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
+
+        StringBuilder sb = new StringBuilder();
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
+            sb.append(error.getDefaultMessage()).append(", ");
+        }
+        return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
+    }
 
     private ResponseEntity<String> error(final Exception exception, final HttpStatus httpStatus) {
         if (exception instanceof IndexOutOfBoundsException)

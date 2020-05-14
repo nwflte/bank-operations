@@ -18,4 +18,6 @@ public interface CompteService {
     Optional<Compte> getComptesForClient(Long id);
 
     Compte save(CompteDTO dto);
+
+    Compte save(Compte compte);
 }
