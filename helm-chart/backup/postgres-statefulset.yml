@@ -1,0 +1,166 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "postgres.name" . }}
+spec:
+  replicas: {{ .Values.apps.postgres.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "reactapp.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "reactapp.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.apps.reactapp.repository }}:{{ .Values.apps.reactapp.tag }}
+          imagePullPolicy: {{ .Values.apps.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.reactapp.internalPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.configmap.postgres.name }}
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: {{ .Values.database.postgres.storageName }}
+            - mountPath: /docker-entrypoint-initdb.d
+              name: {{ .Values.database.postgres.storageInitName }}
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+        - name: postgres-initdb
+          persistentVolumeClaim:
+            claimName: postgres-initdb-pv-claim
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.database.postgres.storageName }}
+    spec:
+      storageClassName: {{ .Values.database.postgres.storageClassName }}
+      accessModes: [ "ReadWriteMany" ]
+      resources:
+        requests:
+          storage: 5Gi
+
+
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-pv-volume
+  labels:
+    type: local
+    app: postgres
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/postgres-data"
+    type: DirectoryOrCreate
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pv-claim
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: postgres-initdb-pv-volume
+  labels:
+    type: local
+    app: postgres
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadOnlyMany
+  hostPath:
+    path: "/home/naoufal/bank-operations/pg-init-scripts/"
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-initdb-pv-claim
+  labels:
+    app: postgres
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Mi
+
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "database.name" . }}
+spec:
+  serviceName: {{ .Values.database.mongo.serviceName }}
+  replicas: {{ .Values.database.mongo.replicas }}
+  template:
+    metadata:
+      labels:
+        role: mongo
+        environment: prod
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mongo
+          image: mongo
+          command:
+            - mongod
+            - "--bind_ip"
+            - 0.0.0.0
+            - "--replSet"
+            - {{ .Values.database.mongo.replicaSet }}
+            - "--smallfiles"
+            - "--noprealloc"
+          ports:
+            - containerPort: {{ .Values.database.mongo.port }}
+          volumeMounts:
+            - name: {{ .Values.database.mongo.storageName }}
+              mountPath: /data/db
+        - name: mongo-sidecar
+          image: cvallance/mongo-k8s-sidecar
+          env:
+            - name: MONGO_SIDECAR_POD_LABELS
+              value: "role=mongo,environment=prod"
+            - name: KUBERNETES_MONGO_SERVICE_NAME
+              value: {{ .Values.database.mongo.serviceName }}
+  volumeClaimTemplates:
+  - metadata:
+      name: {{ .Values.database.mongo.storageName }}
+    spec:
+      storageClassName: {{ .Values.database.mongo.storageClassName }}
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 100Gi

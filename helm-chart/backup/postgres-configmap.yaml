@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configmap.postgres.name }}
+  labels:
+    app: {{ template "database.name" . }}
+data:
+  POSTGRES_MULTIPLE_DATABASES: {{ .Values.configmap.postgres.postgresMultipleDatabases }}
+  POSTGRES_USER: {{ .Values.configmap.postgres.username }}
+  POSTGRES_PASSWORD: {{ .Values.configmap.postgres.password }}
