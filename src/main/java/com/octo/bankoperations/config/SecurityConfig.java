@@ -68,12 +68,13 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        // TODO set appropriate roles
         // To access h2 console
         http.headers().frameOptions().sameOrigin().and()
                 .cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/api/**", "/h2-console/**").hasRole("USER")
+                .antMatchers("/api/**", "/h2-console/**").hasAnyRole("BANK", "CENTRALBANK", "USER")
                 .anyRequest().denyAll();
     }
 
