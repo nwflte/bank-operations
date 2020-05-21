@@ -11,6 +11,7 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_PROFILES_ACTIVE="docker, banka"
     depends_on:
       - dbpostgresql
       - rabbitmq
