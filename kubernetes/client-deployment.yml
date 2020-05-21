@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-client
+  labels:
+    name: bank-client
+    app: bank-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bank-client
+  template:
+    metadata:
+      name: bank-client
+      labels:
+        app: bank-client
+        name: bank-client
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: bank-client
+          image: naoufal450/react-app:latest
+          imagePullPolicy: "Always"
+          env:
+            - name: KEYCLOAK
+              value: "10.0.2.15:30080/auth"
+            - name: BACKEND
+              value: "bank-backend:8081/"
+          ports:
+            - containerPort: 80
+              #protocol: TCP
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: 400m
+              memory: 512Mi
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-client
+  labels:
+    app: bank-client
+    name: bank-client
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 30333
+      port: 80
+      targetPort: 80
+  selector:
+    app: bank-client
+    name: bank-client

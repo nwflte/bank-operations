@@ -24,7 +24,7 @@ spec:
           imagePullPolicy: "IfNotPresent"
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "docker"
+              value: "docker, banka"
             - name: SPRING_RABBITMQ_HOST
               value: "rabbitmq"
             - name: SPRING_DATASOURCE_URL
