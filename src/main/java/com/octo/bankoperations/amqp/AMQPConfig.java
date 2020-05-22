@@ -18,6 +18,9 @@ public class AMQPConfig {
     public Queue virementStatus() {
         return new Queue("virements_status");
     }
+    
+    @Bean(name = "virementsReceived")
+    public Queue virementReceived() { return new Queue("virements_received"); }
 
     @Bean
     public AMQPReceiverStatus receiver() {
