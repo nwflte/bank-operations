@@ -62,14 +62,14 @@ public class DBInit implements CommandLineRunner {
         client2.setEmail("user2@gmail.com");
 
         Compte compte1 = new Compte();
-        compte1.setRib("007787009200000000000000");
+        compte1.setRib(constants.getBankCode() + "787009200000000000000");
         compte1.setSolde(BigDecimal.valueOf(200000L));
         compte1.setClient(client1);
 
         client1.setCompte(compte1);
 
         Compte compte2 = new Compte();
-        compte2.setRib("007787009200000000000001");
+        compte2.setRib(constants.getBankCode() + "787009200000000000001");
         compte2.setSolde(BigDecimal.valueOf(140000L));
         compte2.setClient(client2);
 
@@ -80,7 +80,7 @@ public class DBInit implements CommandLineRunner {
         compteRepository.save(compte2);
         compteRepository.save(compte1);
 
-        Virement virement1 = new Virement();
+        /*Virement virement1 = new Virement();
         virement1.setRibEmetteur(compte1.getRib());
         virement1.setDateExecution(new Date());
         virement1.setAmount(BigDecimal.valueOf(122));
@@ -98,6 +98,6 @@ public class DBInit implements CommandLineRunner {
         virement2.setReference(VirementUtils.generateReference());
         virement2.setStatus(VirementStatus.INTERNE_PENDING_SAVE_IN_CORDA);
 
-        virementRepository.saveAll(Arrays.asList(virement1, virement2));
+        virementRepository.saveAll(Arrays.asList(virement1, virement2));*/
     }
 }

@@ -20,7 +20,6 @@ import java.util.Optional;
 public class InterBankTransferServiceVaultImpl implements InterBankTransferService {
 
     private final String interBankUrl;
-
     private final KeycloakRestTemplate keycloakRestTemplate;
 
     @Autowired

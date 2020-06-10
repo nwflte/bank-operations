@@ -34,9 +34,11 @@ public class ObligationServiceVaultImpl implements ObligationService {
 
     @Override
     public List<CordaDDRObligationDTO> loadAllObligations(StateStatus stateStatus) {
-        ResponseEntity<List<CordaDDRObligationDTO>> response = keycloakRestTemplate.exchange(obligationsURL, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<CordaDDRObligationDTO>>() {
-                });
+        String url = obligationsURL;
+        if(stateStatus.equals(StateStatus.CONSUMED)) url += "all-consumed";
+        else if (stateStatus.equals(StateStatus.UNCONSUMED)) url += "all-unconsumed";
+        ResponseEntity<List<CordaDDRObligationDTO>> response = keycloakRestTemplate.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<CordaDDRObligationDTO>>() {});
         return response.getBody();
     }
 

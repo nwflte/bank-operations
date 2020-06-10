@@ -73,7 +73,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         http.headers().frameOptions().sameOrigin().and()
                 .cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/actuator/**", "/ws-chat/**").permitAll()
                 .antMatchers("/api/**", "/h2-console/**").hasAnyRole("BANK", "CENTRALBANK", "USER")
                 .anyRequest().permitAll();
     }
@@ -122,6 +122,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         configuration.setAllowedOrigins(Collections.singletonList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

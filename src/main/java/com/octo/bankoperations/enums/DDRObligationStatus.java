@@ -1,5 +1,5 @@
 package com.octo.bankoperations.enums;
 
 public enum DDRObligationStatus {
-    REQUEST, APPROVED
+    REQUEST, APPROVED, REJECTED, CANCELED
 }

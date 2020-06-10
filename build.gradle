@@ -29,6 +29,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     // Keycloak
     implementation 'org.keycloak:keycloak-spring-boot-starter'
